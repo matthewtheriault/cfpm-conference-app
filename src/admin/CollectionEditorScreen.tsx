@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -35,11 +35,11 @@ type Props = {
   orderByField?: string;
   storageFolder: string;
   emptyLabel: string;
-  // Lets a parent screen that renders extra content above this editor (e.g.
-  // AdminScheduleScreen's schedule-image card) hide that content while the
-  // form is open, so the full screen is available for it instead of getting
-  // squeezed into whatever space is left below.
-  onEditingChange?: (editing: boolean) => void;
+  // Extra content (e.g. AdminScheduleScreen's schedule-image card) rendered
+  // above the "Add new" button, scrolling together with the list itself
+  // rather than competing with it for space in a separate flex region.
+  // Only shown in list mode — hidden automatically while a form is open.
+  listHeader?: React.ReactNode;
 };
 
 type FormValues = Record<string, string>;
@@ -52,7 +52,7 @@ export function CollectionEditorScreen({
   orderByField,
   storageFolder,
   emptyLabel,
-  onEditingChange,
+  listHeader,
 }: Props) {
   const { data, loading } = useFirestoreCollection<any>(
     collectionPath,
@@ -68,11 +68,6 @@ export function CollectionEditorScreen({
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
 
   const editing = editingId !== null;
-
-  useEffect(() => {
-    onEditingChange?.(editing);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editing]);
 
   const startNew = () => {
     setValues({});
@@ -353,40 +348,39 @@ export function CollectionEditorScreen({
   }
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.addButton} onPress={startNew}>
-        <Ionicons name="add-circle" size={20} color="#fff" />
-        <Text style={styles.addButtonText}>Add new</Text>
-      </Pressable>
-
-      {loading ? (
-        <ActivityIndicator color={colors.primary} style={{ marginTop: spacing.lg }} />
-      ) : sortedData.length === 0 ? (
-        <Text style={styles.emptyText}>{emptyLabel}</Text>
-      ) : (
-        <FlatList
-          data={sortedData}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
-          renderItem={({ item }) => (
-            <Pressable style={styles.row} onPress={() => startEdit(item)}>
-              <View style={styles.rowText}>
-                <Text style={styles.rowTitle}>{item[titleField] || "Untitled"}</Text>
-                {subtitleField && item[subtitleField] ? (
-                  <Text style={styles.rowSubtitle}>{item[subtitleField]}</Text>
-                ) : null}
-              </View>
-              <Pressable
-                hitSlop={12}
-                onPress={() => handleDelete(item.id, item[titleField] || "this item")}
-              >
-                <Ionicons name="trash-outline" size={20} color={colors.muted} />
-              </Pressable>
-            </Pressable>
-          )}
-        />
+    <FlatList
+      style={styles.container}
+      data={sortedData}
+      keyExtractor={(item) => item.id}
+      contentContainerStyle={styles.list}
+      ListHeaderComponent={
+        <>
+          {listHeader}
+          <Pressable style={styles.addButton} onPress={startNew}>
+            <Ionicons name="add-circle" size={20} color="#fff" />
+            <Text style={styles.addButtonText}>Add new</Text>
+          </Pressable>
+          {loading ? <ActivityIndicator color={colors.primary} style={{ marginTop: spacing.lg }} /> : null}
+        </>
+      }
+      ListEmptyComponent={!loading ? <Text style={styles.emptyText}>{emptyLabel}</Text> : null}
+      renderItem={({ item }) => (
+        <Pressable style={styles.row} onPress={() => startEdit(item)}>
+          <View style={styles.rowText}>
+            <Text style={styles.rowTitle}>{item[titleField] || "Untitled"}</Text>
+            {subtitleField && item[subtitleField] ? (
+              <Text style={styles.rowSubtitle}>{item[subtitleField]}</Text>
+            ) : null}
+          </View>
+          <Pressable
+            hitSlop={12}
+            onPress={() => handleDelete(item.id, item[titleField] || "this item")}
+          >
+            <Ionicons name="trash-outline" size={20} color={colors.muted} />
+          </Pressable>
+        </Pressable>
       )}
-    </View>
+    />
   );
 }
 
@@ -465,7 +459,10 @@ const styles = StyleSheet.create({
   },
   addButtonText: { color: "#fff", fontWeight: "700", fontSize: 15 },
   emptyText: { color: colors.muted, fontSize: 14, textAlign: "center", marginTop: spacing.xl },
-  list: { paddingHorizontal: spacing.md, paddingBottom: spacing.lg, gap: spacing.xs },
+  // No horizontal padding here (unlike a plain list) — the "Add new" button,
+  // an optional listHeader, and each row all carry their own horizontal
+  // margin instead, so a listHeader's content doesn't get double-inset.
+  list: { paddingBottom: spacing.lg, gap: spacing.xs },
   row: {
     flexDirection: "row",
     alignItems: "center",
@@ -473,6 +470,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: radii.md,
     padding: spacing.md,
+    marginHorizontal: spacing.md,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
   },

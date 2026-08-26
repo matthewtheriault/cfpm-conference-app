@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db, firebaseConfigured } from "../firebase";
 import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
+import { getTrackColor } from "../trackColors";
 import { colors, spacing, radii } from "../theme";
 import type { ScheduleItem, Speaker } from "../types";
 
@@ -31,6 +32,8 @@ export default function LectureDetailScreen() {
     });
   }, [item.speakerId]);
 
+  const trackColor = item.track ? getTrackColor(item.track, false) : null;
+
   const goToSpeaker = () => {
     if (!speakerProfile) return;
     navigation.getParent()?.navigate("More", {
@@ -43,9 +46,9 @@ export default function LectureDetailScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.badgeRow}>
         <Text style={styles.day}>{item.day}</Text>
-        {item.track ? (
-          <View style={styles.trackBadge}>
-            <Text style={styles.trackBadgeText}>{item.track}</Text>
+        {item.track && trackColor ? (
+          <View style={[styles.trackBadge, { backgroundColor: trackColor.bg, borderColor: trackColor.border }]}>
+            <Text style={[styles.trackBadgeText, { color: trackColor.text }]}>{item.track}</Text>
           </View>
         ) : null}
       </View>

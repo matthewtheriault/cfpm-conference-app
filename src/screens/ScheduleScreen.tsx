@@ -8,6 +8,7 @@ import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
 import { EmptyState } from "../components/EmptyState";
+import { getTrackColor } from "../trackColors";
 import { colors, spacing, radii } from "../theme";
 import type { ScheduleItem, ScheduleOverview } from "../types";
 
@@ -157,13 +158,14 @@ export default function ScheduleScreen() {
           </Pressable>
           {tracks.map((track) => {
             const active = track === selectedTrack;
+            const tc = getTrackColor(track, active);
             return (
               <Pressable
                 key={track}
-                style={[styles.trackChip, active && styles.trackChipActive]}
+                style={[styles.trackChip, { backgroundColor: tc.bg, borderColor: tc.border }]}
                 onPress={() => setSelectedTrack(active ? null : track)}
               >
-                <Text style={[styles.trackChipText, active && styles.trackChipTextActive]}>{track}</Text>
+                <Text style={[styles.trackChipText, { color: tc.text }]}>{track}</Text>
               </Pressable>
             );
           })}
@@ -242,6 +244,8 @@ const styles = StyleSheet.create({
   segmentText: { fontSize: 13, fontWeight: "700", color: colors.ink },
   segmentTextActive: { color: "#fff" },
   trackTabs: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.xs,
@@ -258,6 +262,8 @@ const styles = StyleSheet.create({
   trackChipText: { fontSize: 12, fontWeight: "600", color: colors.ink },
   trackChipTextActive: { color: "#fff" },
   dayTabs: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.xs,

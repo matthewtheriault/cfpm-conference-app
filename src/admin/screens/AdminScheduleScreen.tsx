@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
@@ -96,24 +96,23 @@ function ScheduleOverviewCard() {
 }
 
 export default function AdminScheduleScreen() {
-  const [isEditingSession, setIsEditingSession] = useState(false);
-
   return (
     <View style={styles.container}>
-      {!isEditingSession ? <ScheduleOverviewCard /> : null}
-      <View style={styles.listSection}>
-        {!isEditingSession ? <Text style={styles.listTitle}>Individual sessions</Text> : null}
-        <CollectionEditorScreen
-          collectionPath="schedule"
-          fields={scheduleFields}
-          titleField="title"
-          subtitleField="day"
-          orderByField="order"
-          storageFolder="schedule"
-          emptyLabel="No sessions yet. Tap Add new to create the first one."
-          onEditingChange={setIsEditingSession}
-        />
-      </View>
+      <CollectionEditorScreen
+        collectionPath="schedule"
+        fields={scheduleFields}
+        titleField="title"
+        subtitleField="day"
+        orderByField="order"
+        storageFolder="schedule"
+        emptyLabel="No sessions yet. Tap Add new to create the first one."
+        listHeader={
+          <Fragment>
+            <ScheduleOverviewCard />
+            <Text style={styles.listTitle}>Individual sessions</Text>
+          </Fragment>
+        }
+      />
     </View>
   );
 }
@@ -159,6 +158,5 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   saveButtonText: { color: "#fff", fontWeight: "700" },
-  listSection: { flex: 1, marginTop: spacing.md },
-  listTitle: { fontSize: 13, fontWeight: "700", color: colors.muted, marginLeft: spacing.md, marginBottom: -spacing.sm },
+  listTitle: { fontSize: 13, fontWeight: "700", color: colors.muted, marginLeft: spacing.md },
 });
