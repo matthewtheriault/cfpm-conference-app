@@ -96,11 +96,13 @@ function ScheduleOverviewCard() {
 }
 
 export default function AdminScheduleScreen() {
+  const [isEditingSession, setIsEditingSession] = useState(false);
+
   return (
     <View style={styles.container}>
-      <ScheduleOverviewCard />
+      {!isEditingSession ? <ScheduleOverviewCard /> : null}
       <View style={styles.listSection}>
-        <Text style={styles.listTitle}>Individual sessions</Text>
+        {!isEditingSession ? <Text style={styles.listTitle}>Individual sessions</Text> : null}
         <CollectionEditorScreen
           collectionPath="schedule"
           fields={scheduleFields}
@@ -109,6 +111,7 @@ export default function AdminScheduleScreen() {
           orderByField="order"
           storageFolder="schedule"
           emptyLabel="No sessions yet. Tap Add new to create the first one."
+          onEditingChange={setIsEditingSession}
         />
       </View>
     </View>

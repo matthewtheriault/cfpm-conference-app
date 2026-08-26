@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -35,6 +35,11 @@ type Props = {
   orderByField?: string;
   storageFolder: string;
   emptyLabel: string;
+  // Lets a parent screen that renders extra content above this editor (e.g.
+  // AdminScheduleScreen's schedule-image card) hide that content while the
+  // form is open, so the full screen is available for it instead of getting
+  // squeezed into whatever space is left below.
+  onEditingChange?: (editing: boolean) => void;
 };
 
 type FormValues = Record<string, string>;
@@ -47,6 +52,7 @@ export function CollectionEditorScreen({
   orderByField,
   storageFolder,
   emptyLabel,
+  onEditingChange,
 }: Props) {
   const { data, loading } = useFirestoreCollection<any>(
     collectionPath,
@@ -62,6 +68,11 @@ export function CollectionEditorScreen({
   const [uploadingKey, setUploadingKey] = useState<string | null>(null);
 
   const editing = editingId !== null;
+
+  useEffect(() => {
+    onEditingChange?.(editing);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing]);
 
   const startNew = () => {
     setValues({});
