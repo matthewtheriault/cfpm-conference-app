@@ -1,0 +1,106 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin is intentionally locked to a single organizer account. Even if
+    // the `admin` custom claim were ever granted to another account by
+    // mistake, this still blocks it — only this exact email can write. See
+    // scripts/setAdminClaim.js and README.md.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.admin == true
+        && request.auth.token.email == 'theriaultmatt889@gmail.com';
+    }
+
+    // Content collections: any attendee (who already has the conference
+    // code) can read; only the admin can write, via the in-app admin
+    // content editors.
+    match /schedule/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // A single image (the organizer's own schedule graphic/screenshot) shown
+    // alongside the structured per-session list above, for attendees who
+    // just want the at-a-glance picture.
+    match /scheduleOverview/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /events/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /sponsors/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /speakers/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /exhibitors/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /map/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /boardMembers/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Session check-ins: doc id is "{scheduleItemId}_{deviceId}", so an attendee can
+    // only ever create/delete their own device's check-in for a given session (they'd
+    // have to guess another device's random id to touch anyone else's). Mirrors the
+    // trust model already used for poll responses below. Reads are admin-only for now
+    // (a future organizer-facing check-in count view); the attendee-facing "am I
+    // checked in" state is sourced from on-device storage, not read back from here.
+    match /checkins/{docId} {
+      allow read: if isAdmin();
+      allow create, delete: if true;
+    }
+
+    // Polls/surveys: attendees read the question set, but never each
+    // other's answers. Anyone can submit a response (there's no real
+    // per-user auth to gate this on); responses can't be read back, updated,
+    // or deleted by attendees, only tallied by the admin.
+    match /polls/{pollId} {
+      allow read: if true;
+      allow write: if isAdmin();
+
+      match /responses/{responseId} {
+        allow create: if true;
+        allow read, update, delete: if isAdmin();
+      }
+    }
+
+    // Each device registers its own Expo push token. Devices can create/
+    // update their own token doc but never read or enumerate other devices'
+    // tokens. Admins can read the full list because the admin dashboard
+    // sends push notifications directly from the organizer's device (no
+    // backend server) and needs every token to deliver to.
+    match /pushTokens/{token} {
+      allow read: if isAdmin();
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    // A log of sent notifications, written by the admin dashboard after a
+    // send completes. Doubles as the in-app "Updates" feed, so attendees can
+    // read it; only the admin dashboard writes to it.
+    match /notifications/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
