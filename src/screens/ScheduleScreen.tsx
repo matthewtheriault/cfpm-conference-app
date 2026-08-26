@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, FlatList, Pressable, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc, orderBy } from "firebase/firestore";
@@ -124,11 +124,7 @@ export default function ScheduleScreen() {
       </View>
 
       {view === "full" ? (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.dayTabs}
-        >
+        <View style={styles.dayTabs}>
           {days.map((day) => {
             const active = day === selectedDay;
             return (
@@ -141,15 +137,11 @@ export default function ScheduleScreen() {
               </Pressable>
             );
           })}
-        </ScrollView>
+        </View>
       ) : null}
 
       {tracks.length > 0 ? (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.trackTabs}
-        >
+        <View style={styles.trackTabs}>
           <Pressable
             style={[styles.trackChip, !selectedTrack && styles.trackChipActive]}
             onPress={() => setSelectedTrack(null)}
@@ -169,7 +161,7 @@ export default function ScheduleScreen() {
               </Pressable>
             );
           })}
-        </ScrollView>
+        </View>
       ) : null}
 
       {view === "mine" && itemsForDay.length === 0 ? (
@@ -245,7 +237,7 @@ const styles = StyleSheet.create({
   segmentTextActive: { color: "#fff" },
   trackTabs: {
     flexDirection: "row",
-    alignItems: "center",
+    flexWrap: "wrap",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.xs,
@@ -263,7 +255,7 @@ const styles = StyleSheet.create({
   trackChipTextActive: { color: "#fff" },
   dayTabs: {
     flexDirection: "row",
-    alignItems: "center",
+    flexWrap: "wrap",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     gap: spacing.xs,
