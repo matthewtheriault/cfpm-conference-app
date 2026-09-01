@@ -10,7 +10,7 @@ import type { Exhibitor } from "../types";
 
 export default function ExhibitorsScreen() {
   const navigation = useNavigation<any>();
-  const { data, loading } = useFirestoreCollection<Exhibitor>("exhibitors", [orderBy("name", "asc")]);
+  const { data, loading, error } = useFirestoreCollection<Exhibitor>("exhibitors", [orderBy("name", "asc")]);
 
   if (loading) {
     return (
@@ -23,9 +23,14 @@ export default function ExhibitorsScreen() {
   if (data.length === 0) {
     return (
       <EmptyState
-        icon="business-outline"
-        title="Exhibitors coming soon"
-        message="Exhibit hall booths will be listed here once they're confirmed."
+        icon={error ? "cloud-offline-outline" : "business-outline"}
+        title={error ? "Couldn't load exhibitors" : "Exhibitors coming soon"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Exhibit hall booths will be listed here once they're confirmed."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

@@ -8,6 +8,7 @@ export const colors = {
   muted: "#6B7280",
   success: "#1E9E5A",
   warning: "#C9820A",
+  error: "#B3261E",
 };
 
 export const spacing = {

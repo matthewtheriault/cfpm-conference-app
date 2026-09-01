@@ -10,7 +10,7 @@ import type { Speaker } from "../types";
 
 export default function SpeakersScreen() {
   const navigation = useNavigation<any>();
-  const { data, loading } = useFirestoreCollection<Speaker>("speakers", [orderBy("name", "asc")]);
+  const { data, loading, error } = useFirestoreCollection<Speaker>("speakers", [orderBy("name", "asc")]);
 
   if (loading) {
     return (
@@ -23,9 +23,14 @@ export default function SpeakersScreen() {
   if (data.length === 0) {
     return (
       <EmptyState
-        icon="people-outline"
-        title="Speakers coming soon"
-        message="Guest speaker profiles will appear here once they're added."
+        icon={error ? "cloud-offline-outline" : "people-outline"}
+        title={error ? "Couldn't load speakers" : "Speakers coming soon"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Guest speaker profiles will appear here once they're added."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

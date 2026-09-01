@@ -7,14 +7,17 @@ export function EmptyState({
   icon,
   title,
   message,
+  tone = "empty",
 }: {
   icon: keyof typeof Ionicons.glyphMap;
   title: string;
   message: string;
+  tone?: "empty" | "error";
 }) {
+  const iconColor = tone === "error" ? colors.error : colors.border;
   return (
     <View style={styles.container}>
-      <Ionicons name={icon} size={48} color={colors.border} />
+      <Ionicons name={icon} size={48} color={iconColor} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.message}>{message}</Text>
     </View>

@@ -1,0 +1,24 @@
+name: Send scheduled notifications
+
+on:
+  schedule:
+    # Every 10 minutes. GitHub's cron scheduler isn't to-the-minute precise
+    # under load, so a scheduled send may land a few minutes late - fine for
+    # conference announcements. GitHub also pauses scheduled workflows after
+    # 60 days with no repo activity; a push or manual run re-enables them.
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: node scripts/sendScheduledNotifications.js
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}

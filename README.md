@@ -165,6 +165,29 @@ directly from your device to every attendee's phone that has the app installed w
 notifications enabled, and also appears in every attendee's **Updates** tab. A log of
 what was sent, when, and to how many devices shows underneath.
 
+You can also switch to **Schedule for later**, pick a date/time, and it'll be queued
+instead of sent immediately (shown under "Scheduled", with a cancel button). Delivery is
+handled by a GitHub Actions workflow (`.github/workflows/scheduled-notifications.yml`)
+that checks for due sends roughly every 10 minutes — it can run a few minutes late under
+GitHub's scheduler, and GitHub pauses scheduled workflows on repos with no activity for
+60 days (any push or a manual "Run workflow" click re-enables it). This keeps everything
+on Firebase's free Spark plan, since it avoids needing Cloud Functions (which requires
+the paid Blaze plan).
+
+**One-time setup for scheduled sends:** the workflow needs its own copy of the service
+account key (the `serviceAccountKey.json` you already generated in step 6 above, but
+GitHub can't read your local gitignored file — it goes into a repository secret
+instead):
+
+1. Open the `serviceAccountKey.json` file you downloaded earlier.
+2. In GitHub: your repo → Settings → Secrets and variables → Actions → New repository
+   secret.
+3. Name it `FIREBASE_SERVICE_ACCOUNT`, paste the entire JSON file's contents as the
+   value, and save.
+
+That's it — scheduled sends will start working on the next scheduled run (or trigger one
+immediately from the Actions tab → "Send scheduled notifications" → Run workflow).
+
 ## Building for the App Store / Google Play
 
 This project uses [EAS Build](https://docs.expo.dev/build/introduction/). You'll need:
@@ -204,6 +227,9 @@ src/
   notifications.ts          Push token registration
   pushSend.ts                Sends a push notification directly to all devices
   theme.ts                  Shared colors/spacing
+  components/ErrorBoundary.tsx, OfflineBanner.tsx   Crash guard + offline banner (see App.tsx)
 scripts/setAdminClaim.js    Grants/revokes the admin custom claim (locked to one email)
+scripts/sendScheduledNotifications.js   Delivers due "scheduled for later" notifications
+.github/workflows/scheduled-notifications.yml   Cron trigger for the script above
 firestore.rules            Firestore security rules (admin locked to one email)
 ```

@@ -8,7 +8,7 @@ import { colors, spacing, radii } from "../theme";
 import type { BoardMember } from "../types";
 
 export default function BoardScreen() {
-  const { data, loading } = useFirestoreCollection<BoardMember>("boardMembers", [
+  const { data, loading, error } = useFirestoreCollection<BoardMember>("boardMembers", [
     orderBy("name", "asc"),
   ]);
 
@@ -23,9 +23,14 @@ export default function BoardScreen() {
   if (data.length === 0) {
     return (
       <EmptyState
-        icon="people-outline"
-        title="Board & staff coming soon"
-        message="CFPM board members and staff will appear here once they're added."
+        icon={error ? "cloud-offline-outline" : "people-outline"}
+        title={error ? "Couldn't load board & staff" : "Board & staff coming soon"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "CFPM board members and staff will appear here once they're added."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

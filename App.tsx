@@ -10,6 +10,8 @@ import { BookmarksProvider } from "./src/context/BookmarksContext";
 import { CheckinsProvider } from "./src/context/CheckinsContext";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { registerForPushNotificationsAsync } from "./src/notifications";
+import { ErrorBoundary } from "./src/components/ErrorBoundary";
+import { OfflineBanner } from "./src/components/OfflineBanner";
 
 function PushRegistration() {
   const { isUnlocked } = useAccess();
@@ -28,21 +30,24 @@ function PushRegistration() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AccessProvider>
-        <UserProfileProvider>
-          <BookmarksProvider>
-            <CheckinsProvider>
-              <AdminAuthProvider>
-                <PushRegistration />
-                <NavigationContainer>
-                  <RootNavigator />
-                </NavigationContainer>
-                <StatusBar style="dark" />
-              </AdminAuthProvider>
-            </CheckinsProvider>
-          </BookmarksProvider>
-        </UserProfileProvider>
-      </AccessProvider>
+      <ErrorBoundary>
+        <AccessProvider>
+          <UserProfileProvider>
+            <BookmarksProvider>
+              <CheckinsProvider>
+                <AdminAuthProvider>
+                  <PushRegistration />
+                  <OfflineBanner />
+                  <NavigationContainer>
+                    <RootNavigator />
+                  </NavigationContainer>
+                  <StatusBar style="dark" />
+                </AdminAuthProvider>
+              </CheckinsProvider>
+            </BookmarksProvider>
+          </UserProfileProvider>
+        </AccessProvider>
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }

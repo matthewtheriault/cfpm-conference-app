@@ -44,3 +44,12 @@ serviceAccountKey.json
 # generated native folders
 /ios
 /android
+
+# stray downloads accidentally saved into the repo root (source content
+# belongs in Firestore/Cloudinary via the admin dashboard, not the repo)
+*.crdownload
+/*.png
+/*.jpg
+/*.jpeg
+/*.pdf
+/*.xlsx

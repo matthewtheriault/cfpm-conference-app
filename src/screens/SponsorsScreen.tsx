@@ -10,7 +10,7 @@ import type { Sponsor } from "../types";
 const TIER_ORDER = ["Platinum", "Gold", "Silver", "Bronze"];
 
 export default function SponsorsScreen() {
-  const { data, loading } = useFirestoreCollection<Sponsor>("sponsors", [
+  const { data, loading, error } = useFirestoreCollection<Sponsor>("sponsors", [
     orderBy("name", "asc"),
   ]);
 
@@ -39,9 +39,14 @@ export default function SponsorsScreen() {
   if (sections.length === 0) {
     return (
       <EmptyState
-        icon="ribbon-outline"
-        title="Sponsors coming soon"
-        message="Our conference sponsors will be listed here once they're confirmed."
+        icon={error ? "cloud-offline-outline" : "ribbon-outline"}
+        title={error ? "Couldn't load sponsors" : "Sponsors coming soon"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Our conference sponsors will be listed here once they're confirmed."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

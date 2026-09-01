@@ -103,6 +103,17 @@ export type NotificationDoc = {
   sentAt: Timestamp | null;
 };
 
+export type ScheduledNotification = {
+  id: string;
+  title: string;
+  body: string;
+  sendAt: Timestamp;
+  status: "pending" | "sent" | "failed";
+  createdBy: string;
+  createdAt: Timestamp | null;
+  error?: string;
+};
+
 export type PollQuestionType = "single" | "multiple" | "text";
 
 export type PollQuestion = {

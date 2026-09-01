@@ -14,7 +14,7 @@ import type { ScheduleItem, ScheduleOverview } from "../types";
 
 export default function ScheduleScreen() {
   const navigation = useNavigation<any>();
-  const { data, loading } = useFirestoreCollection<ScheduleItem>("schedule", [
+  const { data, loading, error } = useFirestoreCollection<ScheduleItem>("schedule", [
     orderBy("order", "asc"),
   ]);
   const { isBookmarked, toggleBookmark } = useBookmarks();
@@ -94,9 +94,14 @@ export default function ScheduleScreen() {
       <View style={styles.container}>
         {imageBanner}
         <EmptyState
-          icon="calendar-outline"
-          title="Schedule coming soon"
-          message="The conference schedule hasn't been published yet. Check back closer to the event."
+          icon={error ? "cloud-offline-outline" : "calendar-outline"}
+          title={error ? "Couldn't load the schedule" : "Schedule coming soon"}
+          message={
+            error
+              ? "Check your connection and try again."
+              : "The conference schedule hasn't been published yet. Check back closer to the event."
+          }
+          tone={error ? "error" : "empty"}
         />
       </View>
     );

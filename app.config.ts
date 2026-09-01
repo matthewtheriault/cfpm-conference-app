@@ -49,6 +49,7 @@ const config: ExpoConfig = {
         color: "#EE3A43",
       },
     ],
+    "@react-native-community/datetimepicker",
   ],
   extra: {
     firebase: {

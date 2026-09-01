@@ -7,7 +7,7 @@ import { colors, spacing, radii } from "../theme";
 import type { NotificationDoc } from "../types";
 
 export default function UpdatesScreen() {
-  const { data, loading } = useFirestoreCollection<NotificationDoc>("notifications", [
+  const { data, loading, error } = useFirestoreCollection<NotificationDoc>("notifications", [
     orderBy("sentAt", "desc"),
   ]);
 
@@ -22,9 +22,14 @@ export default function UpdatesScreen() {
   if (data.length === 0) {
     return (
       <EmptyState
-        icon="megaphone-outline"
-        title="No updates yet"
-        message="Announcements from the conference organizers will show up here."
+        icon={error ? "cloud-offline-outline" : "megaphone-outline"}
+        title={error ? "Couldn't load updates" : "No updates yet"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Announcements from the conference organizers will show up here."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

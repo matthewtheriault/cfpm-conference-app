@@ -7,7 +7,7 @@ import { colors, spacing, radii } from "../theme";
 import type { EventItem } from "../types";
 
 export default function EventsScreen() {
-  const { data, loading } = useFirestoreCollection<EventItem>("events", [
+  const { data, loading, error } = useFirestoreCollection<EventItem>("events", [
     orderBy("date", "asc"),
   ]);
 
@@ -22,9 +22,14 @@ export default function EventsScreen() {
   if (data.length === 0) {
     return (
       <EmptyState
-        icon="megaphone-outline"
-        title="No upcoming events yet"
-        message="Announcements and extra conference events will show up here as they're added."
+        icon={error ? "cloud-offline-outline" : "megaphone-outline"}
+        title={error ? "Couldn't load events" : "No upcoming events yet"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Announcements and extra conference events will show up here as they're added."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

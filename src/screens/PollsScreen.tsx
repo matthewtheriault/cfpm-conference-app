@@ -11,7 +11,7 @@ import type { Poll } from "../types";
 
 export default function PollsScreen() {
   const navigation = useNavigation<any>();
-  const { data, loading } = useFirestoreCollection<Poll>("polls", [orderBy("createdAt", "desc")]);
+  const { data, loading, error } = useFirestoreCollection<Poll>("polls", [orderBy("createdAt", "desc")]);
   const openPolls = useMemo(() => data.filter((p) => p.isOpen), [data]);
   const [answeredIds, setAnsweredIds] = useState<Set<string>>(new Set());
 
@@ -38,9 +38,14 @@ export default function PollsScreen() {
   if (openPolls.length === 0) {
     return (
       <EmptyState
-        icon="checkbox-outline"
-        title="No polls right now"
-        message="Post-lecture polls and the conference survey will show up here when they're open."
+        icon={error ? "cloud-offline-outline" : "checkbox-outline"}
+        title={error ? "Couldn't load polls" : "No polls right now"}
+        message={
+          error
+            ? "Check your connection and try again."
+            : "Post-lecture polls and the conference survey will show up here when they're open."
+        }
+        tone={error ? "error" : "empty"}
       />
     );
   }

@@ -15,6 +15,7 @@ import AdminBoardScreen from "../admin/screens/AdminBoardScreen";
 import AdminPollsScreen from "../admin/screens/AdminPollsScreen";
 import AdminPollEditScreen from "../admin/screens/AdminPollEditScreen";
 import AdminPollResponsesScreen from "../admin/screens/AdminPollResponsesScreen";
+import AdminCheckinsScreen from "../admin/screens/AdminCheckinsScreen";
 import MainTabs from "./MainTabs";
 import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -102,6 +103,11 @@ export default function RootNavigator() {
         name="AdminPollResponses"
         component={AdminPollResponsesScreen}
         options={{ headerShown: true, title: "Responses" }}
+      />
+      <Stack.Screen
+        name="AdminCheckins"
+        component={AdminCheckinsScreen}
+        options={{ headerShown: true, title: "Check-in Counts" }}
       />
     </Stack.Navigator>
   );
