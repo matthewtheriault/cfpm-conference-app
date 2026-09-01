@@ -10,12 +10,17 @@ const config: ExpoConfig = {
   scheme: "cfpmconference",
   userInterfaceStyle: "light",
   ios: {
-    supportsTablet: true,
+    // Not tested/optimized for iPad layouts yet - keeps App Review scoped to
+    // iPhone. Flip to true (and add iPad screenshots) once it's been tried.
+    supportsTablet: false,
     bundleIdentifier: "org.cfpm.conference",
     infoPlist: {
       UIBackgroundModes: ["remote-notification"],
       NSPhotoLibraryUsageDescription:
         "Admin mode uses your photo library to upload speaker headshots, logos, and map images.",
+      // Only standard HTTPS/TLS is used (Firebase, Cloudinary, Expo's push
+      // service) - this skips the export-compliance prompt on every build.
+      ITSAppUsesNonExemptEncryption: false,
     },
   },
   android: {
