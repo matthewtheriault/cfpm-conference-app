@@ -40,24 +40,21 @@ Finalized copy, ready to paste into App Store Connect.
 
 ## Screenshots
 
-Use the **6.5" iPhone** size (1242×2688 or 1284×2778 px — export directly from
-Simulator with `Cmd+S`, which captures native resolution; don't reuse downsized chat
-copies). Per-app requirement is confirmed on the version page in App Store Connect —
-double check the exact size it asks for before uploading.
+Uploaded (iPhone 6.5" Display slot, resized to 1284×2778px): **Map**, **Events**,
+**Home**, **More**. Captured live from the iOS Simulator (`xcrun simctl io booted
+screenshot`) and resized with PIL to match Apple's required bucket exactly — raw
+simulator output (1320×2868, iPhone 17 Pro Max) isn't an accepted size.
 
-Do **not** use any screen showing exhibitor/sponsor logos, or speaker names or photos —
-usage rights for that third-party content haven't been confirmed with CFPM. Recommended
-set, in order:
+None of the four show exhibitor/sponsor logos or speaker names/photos, per instruction —
+Home has no sponsor carousel since no sponsors are configured yet in this pass, Map is
+venue-only, More is just the app's own menu, Events shows a single non-personal event.
+The **Schedule** screen was captured but held back — it shows speaker names inline in
+session listings (e.g. "Dr. Ivan Bristow"), which falls under the same restriction.
 
-1. Schedule — **Full Schedule** tab (not "My Schedule", which is empty for a new user)
-2. Map — exhibit hall floor plan (venue-only, no third-party branding)
-3. More — the full feature menu (icons and CFPM's own labels only)
-4. Polls & Surveys list, if populated with real content
-5. A second Schedule view (e.g. a track filter applied) or the Home screen with the
-   sponsor carousel cropped out, if a 5th is needed
-
-Avoid any screen showing an empty state ("No bookmarked sessions", "No updates yet") —
-these read as an incomplete app to both reviewers and prospective downloaders.
+Screenshots don't need to be conference-specific to pass review — Apple just wants proof
+of a real, working app, not empty placeholders. These four satisfy that. If a 5th is
+wanted later, Polls & Surveys and My Schedule are currently empty-state and should be
+avoided until they have real data.
 
 ## Still needed before submission (not code)
 
