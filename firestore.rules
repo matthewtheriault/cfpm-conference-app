@@ -86,9 +86,9 @@ service cloud.firestore {
 
     // Each device registers its own Expo push token. Devices can create/
     // update their own token doc but never read or enumerate other devices'
-    // tokens. Admins can read the full list because the admin dashboard
-    // sends push notifications directly from the organizer's device (no
-    // backend server) and needs every token to deliver to.
+    // tokens. Sending pushes happens server-side (functions/index.js, via
+    // the Admin SDK, which bypasses these rules) - admin read access here is
+    // just for the organizer to inspect the raw token list if needed.
     match /pushTokens/{token} {
       allow read: if isAdmin();
       allow create, update: if true;

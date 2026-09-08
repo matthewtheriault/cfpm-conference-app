@@ -103,11 +103,7 @@ export default function AdminDashboardScreen() {
         setBody("");
         showAlert("Scheduled", `Will send at ${scheduledDate.toLocaleString()}.`);
       } else {
-        const recipientCount = await sendPushToAllDevices(
-          title.trim(),
-          body.trim(),
-          user?.email ?? "admin"
-        );
+        const recipientCount = await sendPushToAllDevices(title.trim(), body.trim());
         setTitle("");
         setBody("");
         showAlert(
