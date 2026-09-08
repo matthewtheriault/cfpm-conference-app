@@ -70,7 +70,11 @@ const config: ExpoConfig = {
       uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET,
     },
     eas: {
-      projectId: process.env.EAS_PROJECT_ID,
+      // Falls back to the known project ID (not a secret - it's already
+      // embedded in the shipped binary and in eas.json's submit config) so a
+      // missing EAS_PROJECT_ID env var can't silently break push token
+      // registration the way it did for builds 3-4.
+      projectId: process.env.EAS_PROJECT_ID || "a17aed39-b7e7-4908-944e-59ce128e8e85",
     },
   },
 };
