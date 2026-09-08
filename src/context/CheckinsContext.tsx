@@ -10,6 +10,7 @@ type CheckinsContextValue = {
   isLoading: boolean;
   isCheckedIn: (scheduleItemId: string) => boolean;
   toggleCheckin: (scheduleItemId: string) => void;
+  clearCheckins: () => Promise<void>;
 };
 
 const CheckinsContext = createContext<CheckinsContextValue | undefined>(undefined);
@@ -68,11 +69,17 @@ export function CheckinsProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const clearCheckins = async () => {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+    setIds(new Set());
+  };
+
   const value = useMemo(
     () => ({
       isLoading,
       isCheckedIn: (id: string) => ids.has(id),
       toggleCheckin,
+      clearCheckins,
     }),
     [ids, isLoading]
   );

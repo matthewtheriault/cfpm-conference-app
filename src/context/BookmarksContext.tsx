@@ -7,6 +7,7 @@ type BookmarksContextValue = {
   isLoading: boolean;
   isBookmarked: (scheduleItemId: string) => boolean;
   toggleBookmark: (scheduleItemId: string) => void;
+  clearBookmarks: () => Promise<void>;
 };
 
 const BookmarksContext = createContext<BookmarksContextValue | undefined>(undefined);
@@ -41,11 +42,17 @@ export function BookmarksProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const clearBookmarks = async () => {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+    setIds(new Set());
+  };
+
   const value = useMemo(
     () => ({
       isLoading,
       isBookmarked: (id: string) => ids.has(id),
       toggleBookmark,
+      clearBookmarks,
     }),
     [ids, isLoading]
   );
