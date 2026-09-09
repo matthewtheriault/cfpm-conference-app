@@ -40,6 +40,9 @@ type Props = {
   // rather than competing with it for space in a separate flex region.
   // Only shown in list mode — hidden automatically while a form is open.
   listHeader?: React.ReactNode;
+  // Optional extra action rendered per row, before the delete icon (e.g.
+  // AdminExhibitorsScreen's "show QR code" button).
+  renderRowAction?: (item: any) => React.ReactNode;
 };
 
 type FormValues = Record<string, string>;
@@ -53,6 +56,7 @@ export function CollectionEditorScreen({
   storageFolder,
   emptyLabel,
   listHeader,
+  renderRowAction,
 }: Props) {
   const { data, loading } = useFirestoreCollection<any>(
     collectionPath,
@@ -372,6 +376,7 @@ export function CollectionEditorScreen({
               <Text style={styles.rowSubtitle}>{item[subtitleField]}</Text>
             ) : null}
           </View>
+          {renderRowAction ? renderRowAction(item) : null}
           <Pressable
             hitSlop={12}
             onPress={() => handleDelete(item.id, item[titleField] || "this item")}

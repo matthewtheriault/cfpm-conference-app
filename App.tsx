@@ -15,6 +15,7 @@ import { AdminAuthProvider } from "./src/context/AdminAuthContext";
 import { UserProfileProvider } from "./src/context/UserProfileContext";
 import { BookmarksProvider } from "./src/context/BookmarksContext";
 import { CheckinsProvider } from "./src/context/CheckinsContext";
+import { ExhibitorPassportProvider } from "./src/context/ExhibitorPassportContext";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { registerForPushNotificationsAsync } from "./src/notifications";
 import { ErrorBoundary } from "./src/components/ErrorBoundary";
@@ -62,14 +63,16 @@ export default function App() {
           <UserProfileProvider>
             <BookmarksProvider>
               <CheckinsProvider>
-                <AdminAuthProvider>
-                  <PushRegistration />
-                  <OfflineBanner />
-                  <NavigationContainer>
-                    <RootNavigator />
-                  </NavigationContainer>
-                  <StatusBar style="dark" />
-                </AdminAuthProvider>
+                <ExhibitorPassportProvider>
+                  <AdminAuthProvider>
+                    <PushRegistration />
+                    <OfflineBanner />
+                    <NavigationContainer>
+                      <RootNavigator />
+                    </NavigationContainer>
+                    <StatusBar style="dark" />
+                  </AdminAuthProvider>
+                </ExhibitorPassportProvider>
               </CheckinsProvider>
             </BookmarksProvider>
           </UserProfileProvider>

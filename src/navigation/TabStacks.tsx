@@ -19,6 +19,8 @@ import SponsorsScreen from "../screens/SponsorsScreen";
 import PollsScreen from "../screens/PollsScreen";
 import PollDetailScreen from "../screens/PollDetailScreen";
 import BoardScreen from "../screens/BoardScreen";
+import PassportScreen from "../screens/PassportScreen";
+import ScanExhibitorScreen from "../screens/ScanExhibitorScreen";
 
 const rootScreenOptions = {
   headerShown: true,
@@ -146,6 +148,16 @@ export function MoreStack() {
         name="PollDetail"
         component={PollDetailScreen}
         options={{ ...rootScreenOptions, ...detailScreenOptions, title: "Poll" }}
+      />
+      <MoreStackNav.Screen
+        name="Passport"
+        component={PassportScreen}
+        options={{ ...rootScreenOptions, ...detailScreenOptions, title: "Exhibitor Passport" }}
+      />
+      <MoreStackNav.Screen
+        name="ScanExhibitor"
+        component={ScanExhibitorScreen}
+        options={{ headerShown: false, presentation: "fullScreenModal" }}
       />
     </MoreStackNav.Navigator>
   );

@@ -18,6 +18,8 @@ const config: ExpoConfig = {
       UIBackgroundModes: ["remote-notification"],
       NSPhotoLibraryUsageDescription:
         "Admin mode uses your photo library to upload speaker headshots, logos, and map images.",
+      NSCameraUsageDescription:
+        "Used to scan exhibitor QR codes for the conference passport. Scanned images aren't saved or uploaded.",
       // Only standard HTTPS/TLS is used (Firebase, Cloudinary, Expo's push
       // service) - this skips the export-compliance prompt on every build.
       ITSAppUsesNonExemptEncryption: false,
@@ -56,6 +58,13 @@ const config: ExpoConfig = {
     ],
     "@react-native-community/datetimepicker",
     "expo-font",
+    [
+      "expo-camera",
+      {
+        cameraPermission:
+          "Used to scan exhibitor QR codes for the conference passport. Scanned images aren't saved or uploaded.",
+      },
+    ],
   ],
   extra: {
     firebase: {

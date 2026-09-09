@@ -8,6 +8,7 @@ import AdminDashboardScreen from "../screens/AdminDashboardScreen";
 import AdminScheduleScreen from "../admin/screens/AdminScheduleScreen";
 import AdminSpeakersScreen from "../admin/screens/AdminSpeakersScreen";
 import AdminExhibitorsScreen from "../admin/screens/AdminExhibitorsScreen";
+import AdminExhibitorQRScreen from "../admin/screens/AdminExhibitorQRScreen";
 import AdminSponsorsScreen from "../admin/screens/AdminSponsorsScreen";
 import AdminEventsScreen from "../admin/screens/AdminEventsScreen";
 import AdminMapScreen from "../admin/screens/AdminMapScreen";
@@ -68,6 +69,11 @@ export default function RootNavigator() {
         name="AdminExhibitors"
         component={AdminExhibitorsScreen}
         options={{ headerShown: true, title: "Manage Exhibitors" }}
+      />
+      <Stack.Screen
+        name="AdminExhibitorQR"
+        component={AdminExhibitorQRScreen}
+        options={{ headerShown: true, title: "Booth QR Code" }}
       />
       <Stack.Screen
         name="AdminSponsors"

@@ -7,6 +7,7 @@ import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
 import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
+import { useExhibitorPassport } from "../context/ExhibitorPassportContext";
 
 const ITEMS: { label: string; icon: keyof typeof Ionicons.glyphMap; screen: string }[] = [
   { label: "Events", icon: "megaphone-outline", screen: "Events" },
@@ -15,6 +16,7 @@ const ITEMS: { label: string; icon: keyof typeof Ionicons.glyphMap; screen: stri
   { label: "Sponsors", icon: "ribbon-outline", screen: "Sponsors" },
   { label: "Board & Staff", icon: "people-circle-outline", screen: "Board" },
   { label: "Polls & Surveys", icon: "checkbox-outline", screen: "Polls" },
+  { label: "Exhibitor Passport", icon: "qr-code-outline", screen: "Passport" },
 ];
 
 export default function MoreScreen() {
@@ -23,18 +25,19 @@ export default function MoreScreen() {
   const { clearProfile } = useUserProfile();
   const { clearBookmarks } = useBookmarks();
   const { clearCheckins } = useCheckins();
+  const { clearVisits } = useExhibitorPassport();
 
   const handleSignOut = () => {
     Alert.alert(
       "Sign out?",
-      "This clears your conference code, name, and bookmarked sessions from this device so it's ready for the next CFPM conference.",
+      "This clears your conference code, name, bookmarked sessions, and exhibitor passport from this device so it's ready for the next CFPM conference.",
       [
         { text: "Cancel", style: "cancel" },
         {
           text: "Sign out",
           style: "destructive",
           onPress: async () => {
-            await Promise.all([clearBookmarks(), clearCheckins(), clearProfile()]);
+            await Promise.all([clearBookmarks(), clearCheckins(), clearVisits(), clearProfile()]);
             await lock();
           },
         },

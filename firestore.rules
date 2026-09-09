@@ -70,6 +70,14 @@ service cloud.firestore {
       allow create, delete: if true;
     }
 
+    // Exhibitor passport visits: doc id is "{exhibitorId}_{deviceId}", same trust
+    // model as check-ins above. Written when an attendee scans an exhibitor's QR
+    // code; never updated or deleted once recorded.
+    match /exhibitorVisits/{docId} {
+      allow read: if isAdmin();
+      allow create: if true;
+    }
+
     // Polls/surveys: attendees read the question set, but never each
     // other's answers. Anyone can submit a response (there's no real
     // per-user auth to gate this on); responses can't be read back, updated,
