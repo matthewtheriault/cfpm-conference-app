@@ -8,6 +8,11 @@ import {
   PlusJakartaSans_600SemiBold,
   PlusJakartaSans_800ExtraBold,
 } from "@expo-google-fonts/plus-jakarta-sans";
+import {
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_700Bold,
+  PlayfairDisplay_800ExtraBold_Italic,
+} from "@expo-google-fonts/playfair-display";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AccessProvider, useAccess } from "./src/context/AccessContext";
@@ -44,6 +49,9 @@ export default function App() {
     PlusJakartaSans_400Regular,
     PlusJakartaSans_600SemiBold,
     PlusJakartaSans_800ExtraBold,
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_700Bold,
+    PlayfairDisplay_800ExtraBold_Italic,
   });
 
   const onRootLayout = useCallback(() => {

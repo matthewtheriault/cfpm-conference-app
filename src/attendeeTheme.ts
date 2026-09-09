@@ -40,6 +40,15 @@ export const fonts = {
   bold: "PlusJakartaSans_800ExtraBold",
 };
 
+// Playfair Display, loaded in App.tsx via @expo-google-fonts - used only on
+// the CME certificate, to match the organizer's certificate template rather
+// than the app's everyday Plus Jakarta Sans.
+export const certificateFonts = {
+  regular: "PlayfairDisplay_400Regular",
+  bold: "PlayfairDisplay_700Bold",
+  nameScript: "PlayfairDisplay_800ExtraBold_Italic",
+};
+
 // A single, restrained elevation for the few surfaces that should lift off
 // the page (see "not everything is a card") - not applied blanket-style to
 // every card.

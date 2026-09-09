@@ -65,6 +65,7 @@ const config: ExpoConfig = {
           "Used to scan exhibitor QR codes for the conference passport. Scanned images aren't saved or uploaded.",
       },
     ],
+    "expo-sharing",
   ],
   extra: {
     firebase: {

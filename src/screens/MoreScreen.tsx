@@ -17,6 +17,7 @@ const ITEMS: { label: string; icon: keyof typeof Ionicons.glyphMap; screen: stri
   { label: "Board & Staff", icon: "people-circle-outline", screen: "Board" },
   { label: "Polls & Surveys", icon: "checkbox-outline", screen: "Polls" },
   { label: "Exhibitor Passport", icon: "qr-code-outline", screen: "Passport" },
+  { label: "Continuing Education Credits", icon: "ribbon-outline", screen: "Certificate" },
 ];
 
 export default function MoreScreen() {
