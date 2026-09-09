@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import { useUserProfile } from "../context/UserProfileContext";
 
 export default function NameEntryScreen() {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "800",
+    fontFamily: fonts.bold,
     color: colors.ink,
     textAlign: "center",
   },
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  buttonText: { color: "#fff", fontSize: 16, fontFamily: fonts.semibold },
   adminLink: { marginTop: spacing.lg, alignItems: "center" },
   adminLinkText: { color: colors.muted, fontSize: 13, textDecorationLine: "underline" },
 });

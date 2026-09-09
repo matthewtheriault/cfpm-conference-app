@@ -6,7 +6,7 @@ import { orderBy, limit } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { useUserProfile } from "../context/UserProfileContext";
 import { SponsorBanner } from "../components/SponsorBanner";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts, shadow } from "../attendeeTheme";
 import type { NotificationDoc } from "../types";
 
 const QUICK_LINKS: {
@@ -86,10 +86,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   content: { padding: spacing.lg, alignItems: "center", paddingBottom: spacing.xl },
-  logo: { width: 140, height: 140, marginBottom: spacing.sm },
-  greeting: { fontSize: 24, fontWeight: "800", color: colors.ink, textAlign: "center" },
+  logo: { width: 120, height: 120, marginBottom: spacing.sm },
+  greeting: { fontSize: 26, fontFamily: fonts.bold, color: colors.ink, textAlign: "center" },
   subheading: {
     fontSize: 14,
+    fontFamily: fonts.regular,
     color: colors.muted,
     textAlign: "center",
     marginBottom: spacing.lg,
@@ -99,28 +100,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: radii.lg,
     padding: spacing.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
     gap: 4,
     marginBottom: spacing.lg,
+    ...shadow,
   },
   updateHeader: { flexDirection: "row", alignItems: "center", gap: 6 },
   updateLabel: {
     fontSize: 11,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.primary,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 0.6,
   },
-  updateTitle: { fontSize: 15, fontWeight: "700", color: colors.ink },
-  updateBody: { fontSize: 13, color: colors.muted },
+  updateTitle: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink },
+  updateBody: { fontSize: 13, fontFamily: fonts.regular, color: colors.muted },
   sectionTitle: {
     alignSelf: "flex-start",
     fontSize: 13,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.primary,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 0.6,
     marginBottom: spacing.sm,
   },
   grid: {
@@ -134,12 +134,11 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     backgroundColor: colors.card,
     borderRadius: radii.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
     padding: spacing.xs,
+    ...shadow,
   },
-  gridLabel: { fontSize: 12, fontWeight: "600", color: colors.ink, textAlign: "center" },
+  gridLabel: { fontSize: 12, fontFamily: fonts.semibold, color: colors.ink, textAlign: "center" },
 });

@@ -6,7 +6,7 @@ import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
 import { hasAnsweredPoll } from "../pollAnswered";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Poll } from "../types";
 
 export default function PollsScreen() {
@@ -92,13 +92,13 @@ const styles = StyleSheet.create({
   cardHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   kind: {
     fontSize: 11,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.primary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   answeredBadge: { flexDirection: "row", alignItems: "center", gap: 4 },
-  answeredText: { fontSize: 12, color: colors.success, fontWeight: "600" },
-  title: { fontSize: 16, fontWeight: "700", color: colors.ink },
+  answeredText: { fontSize: 12, color: colors.success, fontFamily: fonts.semibold },
+  title: { fontSize: 16, fontFamily: fonts.semibold, color: colors.ink },
   description: { fontSize: 13, color: colors.muted },
 });

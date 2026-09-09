@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable, Linking, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 
 type Props = {
   instagramUrl?: string;
@@ -73,5 +73,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   contactRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  contactText: { fontSize: 13, color: colors.primary, fontWeight: "600" },
+  contactText: { fontSize: 13, color: colors.primary, fontFamily: fonts.semibold },
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AdminHeaderButton } from "../components/AdminHeaderButton";
-import { colors } from "../attendeeTheme";
+import { colors, fonts } from "../attendeeTheme";
 
 import HomeScreen from "../screens/HomeScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";
@@ -23,7 +23,7 @@ import BoardScreen from "../screens/BoardScreen";
 const rootScreenOptions = {
   headerShown: true,
   headerRight: () => <AdminHeaderButton />,
-  headerTitleStyle: { fontWeight: "800" as const },
+  headerTitleStyle: { fontFamily: fonts.bold },
   headerTintColor: colors.ink,
 };
 

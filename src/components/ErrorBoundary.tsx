@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 
 export class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 17,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.ink,
     marginTop: spacing.sm,
     textAlign: "center",
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFFFFF",
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     fontSize: 15,
   },
 });

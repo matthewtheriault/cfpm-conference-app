@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Sponsor } from "../types";
 
 const TIER_ORDER = ["Platinum", "Gold", "Silver", "Bronze"];
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   list: { padding: spacing.md, gap: spacing.sm },
   tierHeader: {
     fontSize: 13,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.primary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  logoFallbackText: { color: "#fff", fontSize: 22, fontWeight: "700" },
+  logoFallbackText: { color: "#fff", fontSize: 22, fontFamily: fonts.semibold },
   details: { flex: 1, gap: 2 },
-  name: { fontSize: 16, fontWeight: "700", color: colors.ink },
+  name: { fontSize: 16, fontFamily: fonts.semibold, color: colors.ink },
   description: { fontSize: 13, color: colors.muted },
 });

@@ -3,7 +3,7 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { useRoute } from "@react-navigation/native";
 import { SocialLinks } from "../components/SocialLinks";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Speaker } from "../types";
 
 export default function SpeakerDetailScreen() {
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   content: { padding: spacing.lg, alignItems: "center" },
   photo: { width: 120, height: 120, borderRadius: radii.pill, marginBottom: spacing.md },
   photoFallback: { backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" },
-  photoFallbackText: { color: "#fff", fontSize: 40, fontWeight: "700" },
-  name: { fontSize: 22, fontWeight: "800", color: colors.ink, textAlign: "center" },
+  photoFallbackText: { color: "#fff", fontSize: 40, fontFamily: fonts.semibold },
+  name: { fontSize: 22, fontFamily: fonts.bold, color: colors.ink, textAlign: "center" },
   subtitle: { fontSize: 15, color: colors.muted, textAlign: "center", marginTop: 2 },
   meta: { fontSize: 13, color: colors.muted, textAlign: "center" },
   bio: {

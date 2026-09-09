@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import { useAccess } from "../context/AccessContext";
 
 export default function ConferenceCodeScreen() {
@@ -94,24 +94,25 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   heading: {
-    fontSize: 26,
-    fontWeight: "800",
+    fontSize: 28,
+    fontFamily: fonts.bold,
     color: colors.ink,
     textAlign: "center",
   },
   subheading: {
     fontSize: 15,
+    fontFamily: fonts.regular,
     color: colors.muted,
     textAlign: "center",
     marginBottom: spacing.lg,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.border,
+    borderWidth: 0,
     borderRadius: radii.md,
     paddingHorizontal: spacing.md,
     paddingVertical: 14,
     fontSize: 16,
+    fontFamily: fonts.regular,
     color: colors.ink,
     backgroundColor: colors.card,
     textAlign: "center",
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
   error: {
     color: colors.primary,
     fontSize: 13,
+    fontFamily: fonts.regular,
     textAlign: "center",
   },
   button: {
@@ -130,7 +132,12 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  buttonText: { color: "#fff", fontSize: 16, fontFamily: fonts.semibold },
   adminLink: { marginTop: spacing.lg, alignItems: "center" },
-  adminLinkText: { color: colors.muted, fontSize: 13, textDecorationLine: "underline" },
+  adminLinkText: {
+    color: colors.muted,
+    fontSize: 13,
+    fontFamily: fonts.regular,
+    textDecorationLine: "underline",
+  },
 });

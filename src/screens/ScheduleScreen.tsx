@@ -9,7 +9,7 @@ import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
 import { EmptyState } from "../components/EmptyState";
 import { getTrackColor } from "../trackColors";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { ScheduleItem, ScheduleOverview } from "../types";
 
 export default function ScheduleScreen() {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
   },
-  imageBannerText: { flex: 1, fontSize: 14, fontWeight: "600", color: colors.primary },
+  imageBannerText: { flex: 1, fontSize: 14, fontFamily: fonts.semibold, color: colors.primary },
   segmentRow: {
     flexDirection: "row",
     marginHorizontal: spacing.md,
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   },
   segment: { flex: 1, paddingVertical: 8, borderRadius: radii.pill, alignItems: "center" },
   segmentActive: { backgroundColor: colors.primary },
-  segmentText: { fontSize: 13, fontWeight: "700", color: colors.ink },
+  segmentText: { fontSize: 13, fontFamily: fonts.semibold, color: colors.ink },
   segmentTextActive: { color: "#fff" },
   trackTabs: {
     flexDirection: "row",
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
   },
   trackChipActive: { backgroundColor: colors.ink, borderColor: colors.ink },
-  trackChipText: { fontSize: 12, fontWeight: "600", color: colors.ink },
+  trackChipText: { fontSize: 12, fontFamily: fonts.semibold, color: colors.ink },
   trackChipTextActive: { color: "#fff" },
   dayTabs: {
     flexDirection: "row",
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
   },
   dayTabActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  dayTabText: { fontSize: 13, fontWeight: "700", color: colors.ink },
+  dayTabText: { fontSize: 13, fontFamily: fonts.semibold, color: colors.ink },
   dayTabTextActive: { color: "#fff" },
   list: { padding: spacing.md, paddingTop: 0, gap: spacing.sm },
   card: {
@@ -289,10 +289,10 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   timeColumn: { width: 72 },
-  time: { fontSize: 13, fontWeight: "700", color: colors.ink },
+  time: { fontSize: 13, fontFamily: fonts.semibold, color: colors.ink },
   timeMuted: { fontSize: 12, color: colors.muted },
   details: { flex: 1, gap: 2 },
-  title: { fontSize: 15, fontWeight: "600", color: colors.ink },
+  title: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink },
   subtitle: { fontSize: 13, color: colors.muted },
   meta: { fontSize: 12, color: colors.muted },
 });

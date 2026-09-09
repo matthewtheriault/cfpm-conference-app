@@ -8,7 +8,7 @@ import { db, firebaseConfigured } from "../firebase";
 import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
 import { getTrackColor } from "../trackColors";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { ScheduleItem, Speaker } from "../types";
 
 export default function LectureDetailScreen() {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   badgeRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
   day: {
     fontSize: 12,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.primary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
   },
-  trackBadgeText: { fontSize: 11, fontWeight: "700", color: colors.ink },
+  trackBadgeText: { fontSize: 11, fontFamily: fonts.semibold, color: colors.ink },
   titleRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: spacing.sm },
-  title: { flex: 1, fontSize: 22, fontWeight: "800", color: colors.ink },
-  time: { fontSize: 15, fontWeight: "600", color: colors.ink, marginTop: spacing.xs },
+  title: { flex: 1, fontSize: 22, fontFamily: fonts.bold, color: colors.ink },
+  time: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink, marginTop: spacing.xs },
   speaker: { fontSize: 15, color: colors.muted },
   speakerCard: {
     flexDirection: "row",
@@ -176,9 +176,9 @@ const styles = StyleSheet.create({
   },
   speakerPhoto: { width: 44, height: 44, borderRadius: radii.pill },
   speakerPhotoFallback: { backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" },
-  speakerPhotoFallbackText: { color: "#fff", fontSize: 18, fontWeight: "700" },
+  speakerPhotoFallbackText: { color: "#fff", fontSize: 18, fontFamily: fonts.semibold },
   speakerInfo: { flex: 1, gap: 1 },
-  speakerName: { fontSize: 15, fontWeight: "700", color: colors.ink },
+  speakerName: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink },
   speakerTitle: { fontSize: 12, color: colors.muted },
   locationRow: { flexDirection: "row", alignItems: "center", gap: 4 },
   location: { fontSize: 14, color: colors.muted },
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   checkinButtonActive: { backgroundColor: colors.primary },
-  checkinButtonText: { color: colors.primary, fontWeight: "700", fontSize: 14 },
+  checkinButtonText: { color: colors.primary, fontFamily: fonts.semibold, fontSize: 14 },
   checkinButtonTextActive: { color: "#fff" },
   mediaSection: { marginTop: spacing.lg, marginHorizontal: -spacing.lg },
   mediaImage: { height: 220, backgroundColor: colors.card },

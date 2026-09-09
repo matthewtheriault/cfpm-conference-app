@@ -1,6 +1,13 @@
 import "react-native-gesture-handler";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
+import {
+  useFonts,
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_800ExtraBold,
+} from "@expo-google-fonts/plus-jakarta-sans";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AccessProvider, useAccess } from "./src/context/AccessContext";
@@ -12,6 +19,10 @@ import RootNavigator from "./src/navigation/RootNavigator";
 import { registerForPushNotificationsAsync } from "./src/notifications";
 import { ErrorBoundary } from "./src/components/ErrorBoundary";
 import { OfflineBanner } from "./src/components/OfflineBanner";
+
+SplashScreen.preventAutoHideAsync().catch(() => {
+  // Already hidden or unsupported - safe to ignore.
+});
 
 function PushRegistration() {
   const { isUnlocked } = useAccess();
@@ -28,8 +39,24 @@ function PushRegistration() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_800ExtraBold,
+  });
+
+  const onRootLayout = useCallback(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider onLayout={onRootLayout}>
       <ErrorBoundary>
         <AccessProvider>
           <UserProfileProvider>

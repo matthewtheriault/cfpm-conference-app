@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing } from "../attendeeTheme";
+import { colors, spacing, fonts } from "../attendeeTheme";
 
 export function EmptyState({
   icon,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 17,
-    fontWeight: "700",
+    fontFamily: fonts.semibold,
     color: colors.ink,
     marginTop: spacing.sm,
     textAlign: "center",

@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { doc, getDoc } from "firebase/firestore";
 import { db, firebaseConfigured } from "../firebase";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { VenueMap } from "../types";
 
 const MAP_TABS: { key: "venue" | "exhibitHall"; label: string }[] = [
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  tabText: { fontSize: 13, fontWeight: "700", color: colors.ink },
+  tabText: { fontSize: 13, fontFamily: fonts.semibold, color: colors.ink },
   tabTextActive: { color: "#fff" },
   zoomContent: { alignItems: "center", paddingBottom: spacing.lg },
   notes: {
@@ -137,5 +137,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     marginTop: spacing.md,
   },
-  directionsButtonText: { color: "#fff", fontWeight: "700", fontSize: 14 },
+  directionsButtonText: { color: "#fff", fontFamily: fonts.semibold, fontSize: 14 },
 });

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Pressable, StyleSheet, FlatList, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
 import { useBookmarks } from "../context/BookmarksContext";
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   rowLeft: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
-  rowLabel: { fontSize: 16, fontWeight: "600", color: colors.ink },
+  rowLabel: { fontSize: 16, fontFamily: fonts.semibold, color: colors.ink },
   signOutRow: { marginTop: spacing.md, justifyContent: "flex-start" },
-  signOutLabel: { fontSize: 16, fontWeight: "600", color: colors.error },
+  signOutLabel: { fontSize: 16, fontFamily: fonts.semibold, color: colors.error },
 });

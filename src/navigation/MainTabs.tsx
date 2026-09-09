@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { HomeStack, ScheduleStack, MapStack, UpdatesStack, MoreStack } from "./TabStacks";
-import { colors } from "../attendeeTheme";
+import { colors, fonts } from "../attendeeTheme";
 
 export type MainTabsParamList = {
   Home: undefined;
@@ -29,6 +29,7 @@ export default function MainTabs() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.muted,
+        tabBarLabelStyle: { fontFamily: fonts.semibold, fontSize: 11 },
         tabBarIcon: ({ color, size, focused }) => (
           <Ionicons
             name={

@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Speaker } from "../types";
 
 export default function SpeakersScreen() {
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
   },
   photo: { width: 56, height: 56, borderRadius: radii.pill },
   photoFallback: { backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" },
-  photoFallbackText: { color: "#fff", fontSize: 22, fontWeight: "700" },
+  photoFallbackText: { color: "#fff", fontSize: 22, fontFamily: fonts.semibold },
   details: { flex: 1, gap: 2 },
-  name: { fontSize: 16, fontWeight: "700", color: colors.ink },
+  name: { fontSize: 16, fontFamily: fonts.semibold, color: colors.ink },
   subtitle: { fontSize: 13, color: colors.muted },
   meta: { fontSize: 12, color: colors.muted },
 });

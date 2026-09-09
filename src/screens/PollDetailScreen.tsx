@@ -7,7 +7,7 @@ import { db } from "../firebase";
 import { showAlert } from "../alert";
 import { getDeviceId } from "../deviceId";
 import { hasAnsweredPoll, markPollAnswered } from "../pollAnswered";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Poll } from "../types";
 
 export default function PollDetailScreen() {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   center: { flex: 1, alignItems: "center", justifyContent: "center", padding: spacing.xl, gap: spacing.sm },
   content: { padding: spacing.lg, gap: spacing.md, paddingBottom: spacing.xl },
-  title: { fontSize: 20, fontWeight: "800", color: colors.ink },
+  title: { fontSize: 20, fontFamily: fonts.bold, color: colors.ink },
   description: { fontSize: 14, color: colors.muted, marginTop: -spacing.sm },
   questionCard: {
     backgroundColor: colors.card,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     gap: spacing.xs,
   },
-  questionText: { fontSize: 15, fontWeight: "700", color: colors.ink, marginBottom: 4 },
+  questionText: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink, marginBottom: 4 },
   optionRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm, paddingVertical: 6 },
   optionText: { fontSize: 15, color: colors.ink, flex: 1 },
   input: {
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   buttonDisabled: { opacity: 0.6 },
-  submitButtonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
-  thanksTitle: { fontSize: 18, fontWeight: "700", color: colors.ink },
+  submitButtonText: { color: "#fff", fontFamily: fonts.semibold, fontSize: 16 },
+  thanksTitle: { fontSize: 18, fontFamily: fonts.semibold, color: colors.ink },
   thanksMessage: { fontSize: 14, color: colors.muted, textAlign: "center" },
 });

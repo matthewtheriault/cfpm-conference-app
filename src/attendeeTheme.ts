@@ -1,17 +1,17 @@
 // Attendee-facing theme - the visual identity for the screens attendees see
 // (Home, Schedule, Map, Speakers, Exhibitors, Sponsors, Polls, Board,
-// Updates, More, and the conference-code/name-entry gate). Warmer and
-// softer-edged than the admin dashboard's theme (see ./theme), which stays
-// on the original plain look deliberately - this redesign is scoped to the
-// attendee app only.
+// Updates, More, and the conference-code/name-entry gate). Softer-edged and
+// more considered than the admin dashboard's theme (see ./theme), which
+// stays on the original plain look deliberately - this redesign is scoped
+// to the attendee app only.
 export const colors = {
   primary: "#EE3A43",
   primaryDark: "#C92832",
-  ink: "#2C2A26",
-  background: "#F7F2E7",
+  ink: "#242320",
+  background: "#FAF8F3",
   card: "#FFFFFF",
   border: "transparent",
-  muted: "#84806F",
+  muted: "#7A7568",
   success: "#1E9E5A",
   warning: "#C9820A",
   error: "#B3261E",
@@ -26,8 +26,27 @@ export const spacing = {
 };
 
 export const radii = {
-  sm: 14,
-  md: 22,
-  lg: 28,
+  sm: 10,
+  md: 16,
+  lg: 22,
   pill: 999,
+};
+
+// Plus Jakarta Sans, loaded in App.tsx via @expo-google-fonts. Regular for
+// body copy, semibold for labels/emphasis, extrabold for display/headings.
+export const fonts = {
+  regular: "PlusJakartaSans_400Regular",
+  semibold: "PlusJakartaSans_600SemiBold",
+  bold: "PlusJakartaSans_800ExtraBold",
+};
+
+// A single, restrained elevation for the few surfaces that should lift off
+// the page (see "not everything is a card") - not applied blanket-style to
+// every card.
+export const shadow = {
+  shadowColor: "#1A1712",
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.06,
+  shadowRadius: 12,
+  elevation: 2,
 };

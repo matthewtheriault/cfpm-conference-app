@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Pressable, Linking, StyleSheet } from "react-na
 import { Image } from "expo-image";
 import { useRoute } from "@react-navigation/native";
 import { SocialLinks } from "../components/SocialLinks";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Exhibitor } from "../types";
 
 export default function ExhibitorDetailScreen() {
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   content: { padding: spacing.lg, alignItems: "center" },
   logo: { width: 120, height: 120, borderRadius: radii.md, marginBottom: spacing.md },
   logoFallback: { backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" },
-  logoFallbackText: { color: "#fff", fontSize: 40, fontWeight: "700" },
-  name: { fontSize: 22, fontWeight: "800", color: colors.ink, textAlign: "center" },
+  logoFallbackText: { color: "#fff", fontSize: 40, fontFamily: fonts.semibold },
+  name: { fontSize: 22, fontFamily: fonts.bold, color: colors.ink, textAlign: "center" },
   subtitle: { fontSize: 15, color: colors.muted, textAlign: "center", marginTop: 2 },
   meta: { fontSize: 13, color: colors.muted, textAlign: "center" },
   bio: {
@@ -64,5 +64,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     marginTop: spacing.lg,
   },
-  linkButtonText: { color: "#fff", fontWeight: "700" },
+  linkButtonText: { color: "#fff", fontFamily: fonts.semibold },
 });

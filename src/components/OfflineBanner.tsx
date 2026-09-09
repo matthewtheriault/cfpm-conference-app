@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useNetworkState } from "expo-network";
-import { colors, spacing } from "../attendeeTheme";
+import { colors, spacing, fonts } from "../attendeeTheme";
 
 export function OfflineBanner() {
   const { isConnected, isInternetReachable } = useNetworkState();
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#FFFFFF",
     fontSize: 13,
-    fontWeight: "600",
+    fontFamily: fonts.semibold,
   },
 });

@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-nativ
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../attendeeTheme";
+import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { NotificationDoc } from "../types";
 
 export default function UpdatesScreen() {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     gap: 4,
   },
-  title: { fontSize: 16, fontWeight: "700", color: colors.ink },
+  title: { fontSize: 16, fontFamily: fonts.semibold, color: colors.ink },
   body: { fontSize: 14, color: colors.ink, lineHeight: 20 },
   meta: { fontSize: 12, color: colors.muted, marginTop: 2 },
 });

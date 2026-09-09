@@ -55,6 +55,7 @@ const config: ExpoConfig = {
       },
     ],
     "@react-native-community/datetimepicker",
+    "expo-font",
   ],
   extra: {
     firebase: {
