@@ -6,7 +6,7 @@ import { orderBy, limit } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { useUserProfile } from "../context/UserProfileContext";
 import { SponsorBanner } from "../components/SponsorBanner";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { NotificationDoc } from "../types";
 
 const QUICK_LINKS: {

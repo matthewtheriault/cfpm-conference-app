@@ -8,7 +8,7 @@ import { db, firebaseConfigured } from "../firebase";
 import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
 import { getTrackColor } from "../trackColors";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { ScheduleItem, Speaker } from "../types";
 
 export default function LectureDetailScreen() {

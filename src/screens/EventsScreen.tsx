@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, ActivityIndicator } from "react-nativ
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { EventItem } from "../types";
 
 export default function EventsScreen() {

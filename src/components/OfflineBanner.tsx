@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useNetworkState } from "expo-network";
-import { colors, spacing } from "../theme";
+import { colors, spacing } from "../attendeeTheme";
 
 export function OfflineBanner() {
   const { isConnected, isInternetReachable } = useNetworkState();

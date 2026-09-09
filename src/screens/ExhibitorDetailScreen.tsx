@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Pressable, Linking, StyleSheet } from "react-na
 import { Image } from "expo-image";
 import { useRoute } from "@react-navigation/native";
 import { SocialLinks } from "../components/SocialLinks";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { Exhibitor } from "../types";
 
 export default function ExhibitorDetailScreen() {

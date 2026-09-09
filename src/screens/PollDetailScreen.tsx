@@ -7,7 +7,7 @@ import { db } from "../firebase";
 import { showAlert } from "../alert";
 import { getDeviceId } from "../deviceId";
 import { hasAnsweredPoll, markPollAnswered } from "../pollAnswered";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { Poll } from "../types";
 
 export default function PollDetailScreen() {

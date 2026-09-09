@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { Speaker } from "../types";
 
 export default function SpeakersScreen() {

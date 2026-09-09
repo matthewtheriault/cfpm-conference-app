@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { HomeStack, ScheduleStack, MapStack, UpdatesStack, MoreStack } from "./TabStacks";
-import { colors } from "../theme";
+import { colors } from "../attendeeTheme";
 
 export type MainTabsParamList = {
   Home: undefined;

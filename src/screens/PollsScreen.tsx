@@ -6,7 +6,7 @@ import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
 import { EmptyState } from "../components/EmptyState";
 import { hasAnsweredPoll } from "../pollAnswered";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { Poll } from "../types";
 
 export default function PollsScreen() {

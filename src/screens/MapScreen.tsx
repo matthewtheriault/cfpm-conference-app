@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { doc, getDoc } from "firebase/firestore";
 import { db, firebaseConfigured } from "../firebase";
 import { EmptyState } from "../components/EmptyState";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { VenueMap } from "../types";
 
 const MAP_TABS: { key: "venue" | "exhibitHall"; label: string }[] = [

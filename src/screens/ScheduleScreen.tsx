@@ -9,7 +9,7 @@ import { useBookmarks } from "../context/BookmarksContext";
 import { useCheckins } from "../context/CheckinsContext";
 import { EmptyState } from "../components/EmptyState";
 import { getTrackColor } from "../trackColors";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { ScheduleItem, ScheduleOverview } from "../types";
 
 export default function ScheduleScreen() {

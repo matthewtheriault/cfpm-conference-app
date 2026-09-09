@@ -1,4 +1,4 @@
-import { colors } from "./theme";
+import { colors } from "./attendeeTheme";
 
 type TrackColor = { bg: string; border: string; text: string };
 

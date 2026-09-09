@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, useWindowDimensions, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { useRoute } from "@react-navigation/native";
-import { colors, spacing } from "../theme";
+import { colors, spacing } from "../attendeeTheme";
 
 export default function ScheduleImageScreen() {
   const { width } = useWindowDimensions();

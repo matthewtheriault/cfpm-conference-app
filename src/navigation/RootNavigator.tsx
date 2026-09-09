@@ -19,7 +19,7 @@ import AdminCheckinsScreen from "../admin/screens/AdminCheckinsScreen";
 import MainTabs from "./MainTabs";
 import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
-import { colors } from "../theme";
+import { colors } from "../attendeeTheme";
 
 const Stack = createNativeStackNavigator();
 

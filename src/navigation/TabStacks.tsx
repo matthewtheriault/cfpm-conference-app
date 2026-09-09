@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AdminHeaderButton } from "../components/AdminHeaderButton";
-import { colors } from "../theme";
+import { colors } from "../attendeeTheme";
 
 import HomeScreen from "../screens/HomeScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";

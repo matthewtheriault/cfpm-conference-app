@@ -3,7 +3,7 @@ import { View, ScrollView, Pressable, Linking, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
-import { colors, spacing, radii } from "../theme";
+import { colors, spacing, radii } from "../attendeeTheme";
 import type { Sponsor } from "../types";
 
 const LOGO_WIDTH = 120;
