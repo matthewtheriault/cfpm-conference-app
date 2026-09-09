@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db, firebaseConfigured } from "../firebase";
 import { getDeviceId } from "../deviceId";
+import { useUserProfile } from "./UserProfileContext";
 
 const STORAGE_KEY = "cfpm.exhibitorPassport";
 
@@ -19,6 +20,7 @@ const ExhibitorPassportContext = createContext<ExhibitorPassportContextValue | u
 export function ExhibitorPassportProvider({ children }: { children: React.ReactNode }) {
   const [ids, setIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const { firstName, lastName } = useUserProfile();
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY).then((raw) => {
@@ -40,6 +42,8 @@ export function ExhibitorPassportProvider({ children }: { children: React.ReactN
       await setDoc(doc(db, "exhibitorVisits", `${exhibitorId}_${deviceId}`), {
         exhibitorId,
         deviceId,
+        firstName,
+        lastName,
         visitedAt: serverTimestamp(),
       });
     } catch {

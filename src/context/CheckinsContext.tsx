@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db, firebaseConfigured } from "../firebase";
 import { getDeviceId } from "../deviceId";
+import { useUserProfile } from "./UserProfileContext";
 
 const STORAGE_KEY = "cfpm.checkins";
 
@@ -18,6 +19,7 @@ const CheckinsContext = createContext<CheckinsContextValue | undefined>(undefine
 export function CheckinsProvider({ children }: { children: React.ReactNode }) {
   const [ids, setIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const { firstName, lastName } = useUserProfile();
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY).then((raw) => {
@@ -41,6 +43,8 @@ export function CheckinsProvider({ children }: { children: React.ReactNode }) {
         await setDoc(checkinRef, {
           scheduleItemId,
           deviceId,
+          firstName,
+          lastName,
           checkedInAt: serverTimestamp(),
           method: "self",
         });

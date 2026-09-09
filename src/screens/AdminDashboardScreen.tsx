@@ -162,6 +162,7 @@ export default function AdminDashboardScreen() {
             { label: "Board & staff", screen: "AdminBoard" },
             { label: "Polls & surveys", screen: "AdminPolls" },
             { label: "Check-in counts", screen: "AdminCheckins" },
+            { label: "Leaderboard", screen: "AdminLeaderboard" },
           ].map((item) => (
             <Pressable
               key={item.screen}

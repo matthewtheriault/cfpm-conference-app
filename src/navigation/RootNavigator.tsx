@@ -17,6 +17,8 @@ import AdminPollsScreen from "../admin/screens/AdminPollsScreen";
 import AdminPollEditScreen from "../admin/screens/AdminPollEditScreen";
 import AdminPollResponsesScreen from "../admin/screens/AdminPollResponsesScreen";
 import AdminCheckinsScreen from "../admin/screens/AdminCheckinsScreen";
+import AdminLeaderboardScreen from "../admin/screens/AdminLeaderboardScreen";
+import AdminPrizeWheelScreen from "../admin/screens/AdminPrizeWheelScreen";
 import MainTabs from "./MainTabs";
 import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -114,6 +116,16 @@ export default function RootNavigator() {
         name="AdminCheckins"
         component={AdminCheckinsScreen}
         options={{ headerShown: true, title: "Check-in Counts" }}
+      />
+      <Stack.Screen
+        name="AdminLeaderboard"
+        component={AdminLeaderboardScreen}
+        options={{ headerShown: true, title: "Leaderboard" }}
+      />
+      <Stack.Screen
+        name="AdminPrizeWheel"
+        component={AdminPrizeWheelScreen}
+        options={{ headerShown: true, title: "Prize Wheel" }}
       />
     </Stack.Navigator>
   );
