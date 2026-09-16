@@ -9,6 +9,7 @@ export default function AdminBoardScreen() {
       fields={boardMemberFields}
       titleField="name"
       subtitleField="role"
+      orderByField="order"
       storageFolder="board"
       emptyLabel="No board members or staff yet. Tap Add new to create the first one."
     />

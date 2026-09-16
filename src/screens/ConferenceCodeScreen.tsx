@@ -8,10 +8,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Linking,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import { useAccess } from "../context/AccessContext";
+
+const REGISTRATION_URL = "https://www.podiatryinfocanada.ca/CFPM-Annual-Conference-2026";
 
 export default function ConferenceCodeScreen() {
   const { submitCode } = useAccess();
@@ -69,6 +72,13 @@ export default function ConferenceCodeScreen() {
           disabled={submitting}
         >
           <Text style={styles.buttonText}>{submitting ? "Checking..." : "Enter"}</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => Linking.openURL(REGISTRATION_URL)}
+          style={styles.registerLink}
+        >
+          <Text style={styles.registerLinkText}>Don't have a code? Register for the conference</Text>
         </Pressable>
 
         <Pressable onPress={() => navigation.navigate("AdminLogin")} style={styles.adminLink}>
@@ -133,7 +143,14 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { color: "#fff", fontSize: 16, fontFamily: fonts.semibold },
-  adminLink: { marginTop: spacing.lg, alignItems: "center" },
+  registerLink: { marginTop: spacing.lg, alignItems: "center" },
+  registerLinkText: {
+    color: colors.primary,
+    fontSize: 14,
+    fontFamily: fonts.semibold,
+    textDecorationLine: "underline",
+  },
+  adminLink: { marginTop: spacing.sm, alignItems: "center" },
   adminLinkText: {
     color: colors.muted,
     fontSize: 13,

@@ -29,15 +29,15 @@ for admin photo/logo uploads.
   and to send push notifications. Reachable from the shield icon in the header, or the
   "Admin sign in" link on the code-entry screen. **Admin access is hardcoded to one email
   address** (see "Admin access" below) — it can't be granted to anyone else, even by
-  accident. Photo/logo uploads go through Cloudinary (not Firebase Storage), so the app
-  stays entirely on Firebase's free Spark plan — see "Cloudinary setup" below.
-- **Push notifications** — sent directly from the organizer's device to Expo's push
-  service (works for both iOS and Android without you managing APNs/FCM credentials, and
-  needs no backend server). Notifications are send-immediately only — there's no
-  "schedule for later" yet, since that would need a server running in the background even
-  when no one has the app open. If you want scheduled sends later, the two paths are: a
-  free scheduled GitHub Actions workflow, or Firebase Cloud Functions on the paid Blaze
-  plan — ask and we can add either.
+  accident. Photo/logo uploads go through Cloudinary (not Firebase Storage) — see
+  "Cloudinary setup" below.
+- **Push notifications** — "Send Now" goes through a Cloud Function (`functions/index.js`)
+  that fans the send out to Expo's push service server-side (a browser can't call Expo's
+  push API directly — it doesn't return CORS headers), delivered within a few seconds to
+  both iOS and Android. "Schedule for later" instead goes through a free scheduled GitHub
+  Actions workflow that needs no Cloud Function. Since Cloud Functions requires Firebase's
+  paid **Blaze** plan to deploy at all (regardless of usage — see step 2 below), "Send Now"
+  needs Blaze; "Schedule for later" alone would work on the free Spark plan.
 
 ## One-time setup
 
@@ -56,9 +56,16 @@ npm install
 4. Enable **Authentication -> Sign-in method -> Email/Password** (this is how you, the
    organizer, sign in to the admin dashboard — attendees never use Firebase Auth).
 
-That's it for billing — everything in this app runs on Firebase's free **Spark** plan.
 Photo/logo/map uploads go through Cloudinary instead of Firebase Storage (see below), so
-nothing here requires upgrading to the paid Blaze plan.
+Firestore/Auth alone would stay on Firebase's free **Spark** plan. But the "Send Now"
+push notification feature runs on a Cloud Function (`functions/index.js`), and Cloud
+Functions requires upgrading to the paid **Blaze** (pay-as-you-go) plan to deploy at all
+— even a function that never exceeds the free-tier usage allowances still needs Blaze
+just to exist. Blaze doesn't lower any of Spark's free allowances or charge a base fee;
+it only means a payment method is on file and usage beyond the free tier gets billed
+instead of blocked. At a conference-sized user count this app is nowhere close to
+exceeding those free tiers. Upgrade at Firebase console → your project → gear icon →
+Usage and billing → Modify plan.
 
 ### 3. Cloudinary setup (for admin photo/logo uploads)
 
@@ -99,7 +106,20 @@ Firebase project ID, then:
 firebase deploy --only firestore:rules,firestore:indexes
 ```
 
-### 6. Give yourself admin access
+### 6. Deploy the push notification Cloud Function
+
+This step needs the Blaze plan (see step 2) — upgrade first if you haven't. Then:
+
+```bash
+cd functions && npm install && cd ..
+firebase deploy --only functions
+```
+
+This deploys `sendPushNotification`, which the admin dashboard's "Send Now" button calls.
+Skip this step if you only plan to use "Schedule for later" (see "Sending push
+notifications" below) — that path doesn't need a Cloud Function and stays on Spark.
+
+### 7. Give yourself admin access
 
 Admin access is locked to **one email address**, hardcoded in two places: the
 `isAdmin()` check in `firestore.rules`, and a guard in `scripts/setAdminClaim.js` that
@@ -160,22 +180,23 @@ You can still add/edit documents directly in the Firestore console if you ever n
 ## Sending push notifications
 
 Sign in on the Admin dashboard (shield icon in the header) with your organizer account.
-Compose a title and message and tap **Send Now** — it's delivered within a few seconds,
-directly from your device to every attendee's phone that has the app installed with
-notifications enabled, and also appears in every attendee's **Updates** tab. A log of
-what was sent, when, and to how many devices shows underneath.
+Compose a title and message and tap **Send Now** — it's delivered within a few seconds
+to every attendee's phone that has the app installed with notifications enabled, and
+also appears in every attendee's **Updates** tab. Under the hood this calls the
+`sendPushNotification` Cloud Function (see step 6 of setup — needs the Blaze plan), which
+fans the send out to Expo's push service server-side. A log of what was sent, when, and
+to how many devices shows underneath.
 
 You can also switch to **Schedule for later**, pick a date/time, and it'll be queued
 instead of sent immediately (shown under "Scheduled", with a cancel button). Delivery is
 handled by a GitHub Actions workflow (`.github/workflows/scheduled-notifications.yml`)
 that checks for due sends roughly every 10 minutes — it can run a few minutes late under
 GitHub's scheduler, and GitHub pauses scheduled workflows on repos with no activity for
-60 days (any push or a manual "Run workflow" click re-enables it). This keeps everything
-on Firebase's free Spark plan, since it avoids needing Cloud Functions (which requires
-the paid Blaze plan).
+60 days (any push or a manual "Run workflow" click re-enables it). This path doesn't use
+Cloud Functions at all, so it works on the free Spark plan even if you skip step 6.
 
 **One-time setup for scheduled sends:** the workflow needs its own copy of the service
-account key (the `serviceAccountKey.json` you already generated in step 6 above, but
+account key (the `serviceAccountKey.json` you generated in step 7 of setup, but
 GitHub can't read your local gitignored file — it goes into a repository secret
 instead):
 

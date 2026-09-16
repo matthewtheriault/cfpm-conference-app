@@ -51,6 +51,10 @@ export default function PollDetailScreen() {
         submittedAt: serverTimestamp(),
       });
       await markPollAnswered(poll.id);
+      if (poll.kind === "postConferenceSurvey") {
+        navigation.replace("Certificate");
+        return;
+      }
       setAlreadyAnswered(true);
     } catch {
       showAlert("Couldn't submit", "Something went wrong. Please try again.");

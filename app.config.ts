@@ -27,6 +27,7 @@ const config: ExpoConfig = {
   },
   android: {
     package: "org.cfpm.conference",
+    googleServicesFile: "./google-services.json",
     adaptiveIcon: {
       backgroundColor: "#EE3A43",
       foregroundImage: "./assets/android-icon-foreground.png",

@@ -80,7 +80,7 @@ export const sponsorFields: FieldConfig[] = [
     key: "tier",
     label: "Tier",
     type: "select",
-    options: ["Platinum", "Gold", "Silver", "Bronze"],
+    options: ["Platinum", "Gold", "Silver", "Bronze", "Lanyard"],
   },
   { key: "website", label: "Website", type: "text", placeholder: "https://" },
   { key: "description", label: "Description", type: "textarea" },
@@ -100,6 +100,7 @@ export const eventFields: FieldConfig[] = [
 export const boardMemberFields: FieldConfig[] = [
   { key: "name", label: "Name", type: "text", required: true },
   { key: "role", label: "Role", type: "text", placeholder: "e.g. President, Executive Director" },
+  { key: "order", label: "Sort order", type: "number", placeholder: "e.g. 10" },
   { key: "bio", label: "Bio", type: "textarea" },
   { key: "photoUrl", label: "Photo", type: "image" },
 ];

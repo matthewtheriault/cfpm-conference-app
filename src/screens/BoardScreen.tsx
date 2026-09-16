@@ -9,7 +9,7 @@ import type { BoardMember } from "../types";
 
 export default function BoardScreen() {
   const { data, loading, error } = useFirestoreCollection<BoardMember>("boardMembers", [
-    orderBy("name", "asc"),
+    orderBy("order", "asc"),
   ]);
 
   if (loading) {

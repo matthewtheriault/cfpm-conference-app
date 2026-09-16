@@ -62,7 +62,7 @@ export default function AdminDashboardScreen() {
             style={styles.linkButton}
             onPress={async () => {
               await signOutAdmin();
-              navigation.popToTop();
+              navigation.goBack();
             }}
           >
             <Text style={styles.linkButtonText}>Sign out</Text>
@@ -138,7 +138,7 @@ export default function AdminDashboardScreen() {
         <Pressable
           onPress={async () => {
             await signOutAdmin();
-            navigation.popToTop();
+            navigation.goBack();
           }}
         >
           <Text style={styles.signOut}>Sign out</Text>

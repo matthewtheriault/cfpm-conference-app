@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { View, Text, Image, Pressable, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { orderBy } from "firebase/firestore";
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
@@ -25,30 +25,33 @@ export default function CertificateScreen() {
   const navigation = useNavigation<any>();
   const { firstName, lastName } = useUserProfile();
   const { data: polls, loading } = useFirestoreCollection<Poll>("polls", [orderBy("createdAt", "desc")]);
-  const surveys = useMemo(() => polls.filter((p) => p.kind === "survey"), [polls]);
+  const surveys = useMemo(() => polls.filter((p) => p.kind === "postConferenceSurvey"), [polls]);
 
   const [checkingAnswers, setCheckingAnswers] = useState(true);
   const [eligible, setEligible] = useState(false);
   const shotRef = useRef<React.ElementRef<typeof ViewShot>>(null);
 
-  useEffect(() => {
-    if (loading) return;
-    if (surveys.length === 0) {
-      setCheckingAnswers(false);
-      setEligible(false);
-      return;
-    }
-    let cancelled = false;
-    Promise.all(surveys.map((s) => hasAnsweredPoll(s.id))).then((results) => {
-      if (!cancelled) {
-        setEligible(results.every(Boolean));
+  useFocusEffect(
+    useCallback(() => {
+      if (loading) return;
+      if (surveys.length === 0) {
         setCheckingAnswers(false);
+        setEligible(false);
+        return;
       }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [loading, surveys]);
+      let cancelled = false;
+      setCheckingAnswers(true);
+      Promise.all(surveys.map((s) => hasAnsweredPoll(s.id))).then((results) => {
+        if (!cancelled) {
+          setEligible(results.every(Boolean));
+          setCheckingAnswers(false);
+        }
+      });
+      return () => {
+        cancelled = true;
+      };
+    }, [loading, surveys])
+  );
 
   const handleShare = async () => {
     const uri = await shotRef.current?.capture?.();

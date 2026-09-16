@@ -7,7 +7,7 @@ import { EmptyState } from "../components/EmptyState";
 import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Sponsor } from "../types";
 
-const TIER_ORDER = ["Platinum", "Gold", "Silver", "Bronze"];
+const TIER_ORDER = ["Platinum", "Gold", "Silver", "Bronze", "Lanyard"];
 
 export default function SponsorsScreen() {
   const { data, loading, error } = useFirestoreCollection<Sponsor>("sponsors", [

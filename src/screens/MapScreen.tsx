@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, Pressable, Linking, useWindowDimensions, ActivityIndicator, StyleSheet, Text } from "react-native";
+import { View, ScrollView, Pressable, Linking, Platform, useWindowDimensions, ActivityIndicator, StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { doc, getDoc } from "firebase/firestore";
@@ -82,11 +82,14 @@ export default function MapScreen() {
           {map.address ? (
             <Pressable
               style={styles.directionsButton}
-              onPress={() =>
-                Linking.openURL(
-                  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(map.address!)}`
-                )
-              }
+              onPress={() => {
+                const encodedAddress = encodeURIComponent(map.address!);
+                const url = Platform.select({
+                  ios: `https://maps.apple.com/?q=${encodedAddress}`,
+                  default: `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`,
+                });
+                Linking.openURL(url);
+              }}
             >
               <Ionicons name="navigate-outline" size={18} color="#fff" />
               <Text style={styles.directionsButtonText}>Get Directions</Text>

@@ -60,7 +60,13 @@ export default function PollsScreen() {
         return (
           <Pressable style={styles.card} onPress={() => navigation.navigate("PollDetail", { poll: item })}>
             <View style={styles.cardHeader}>
-              <Text style={styles.kind}>{item.kind === "survey" ? "Survey" : "Poll"}</Text>
+              <Text style={styles.kind}>
+                {item.kind === "postConferenceSurvey"
+                  ? "Post Conference Survey"
+                  : item.kind === "survey"
+                    ? "Survey"
+                    : "Poll"}
+              </Text>
               {answered ? (
                 <View style={styles.answeredBadge}>
                   <Ionicons name="checkmark-circle" size={14} color={colors.success} />

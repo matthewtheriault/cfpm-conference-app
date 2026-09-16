@@ -28,7 +28,7 @@ export type EventItem = {
 export type Sponsor = {
   id: string;
   name: string;
-  tier?: "Platinum" | "Gold" | "Silver" | "Bronze" | string;
+  tier?: "Platinum" | "Gold" | "Silver" | "Bronze" | "Lanyard" | string;
   logoUrl?: string;
   website?: string;
   description?: string;
@@ -80,6 +80,7 @@ export type BoardMember = {
   role?: string;
   photoUrl?: string;
   bio?: string;
+  order?: number;
 };
 
 export type SessionCheckin = {
@@ -127,7 +128,7 @@ export type Poll = {
   id: string;
   title: string;
   description?: string;
-  kind: "poll" | "survey";
+  kind: "poll" | "survey" | "postConferenceSurvey";
   isOpen: boolean;
   questions: PollQuestion[];
   createdAt?: Timestamp | null;

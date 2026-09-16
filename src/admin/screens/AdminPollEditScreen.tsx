@@ -25,7 +25,7 @@ export default function AdminPollEditScreen() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [kind, setKind] = useState<"poll" | "survey">("poll");
+  const [kind, setKind] = useState<"poll" | "survey" | "postConferenceSurvey">("poll");
   const [isOpen, setIsOpen] = useState(true);
   const [questions, setQuestions] = useState<PollQuestion[]>([]);
   const [loading, setLoading] = useState(Boolean(pollId));
@@ -133,14 +133,14 @@ export default function AdminPollEditScreen() {
 
       <Text style={styles.label}>Type</Text>
       <View style={styles.chipRow}>
-        {(["poll", "survey"] as const).map((value) => (
+        {(["poll", "survey", "postConferenceSurvey"] as const).map((value) => (
           <Pressable
             key={value}
             style={[styles.chip, kind === value && styles.chipActive]}
             onPress={() => setKind(value)}
           >
             <Text style={[styles.chipText, kind === value && styles.chipTextActive]}>
-              {value === "poll" ? "Poll" : "Survey"}
+              {value === "poll" ? "Poll" : value === "survey" ? "Survey" : "Post Conference Survey"}
             </Text>
           </Pressable>
         ))}

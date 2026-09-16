@@ -47,7 +47,12 @@ export default function AdminPollsScreen() {
               <View style={styles.rowText}>
                 <Text style={styles.rowTitle}>{item.title}</Text>
                 <Text style={styles.rowSubtitle}>
-                  {item.kind === "survey" ? "Survey" : "Poll"} · {item.questions?.length ?? 0}{" "}
+                  {item.kind === "postConferenceSurvey"
+                    ? "Post Conference Survey"
+                    : item.kind === "survey"
+                      ? "Survey"
+                      : "Poll"}{" "}
+                  · {item.questions?.length ?? 0}{" "}
                   question{(item.questions?.length ?? 0) === 1 ? "" : "s"} ·{" "}
                   {item.isOpen ? "Open" : "Closed"}
                 </Text>
