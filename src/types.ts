@@ -95,6 +95,14 @@ export type ScheduleOverview = {
   imageUrl?: string;
 };
 
+export type Profile = {
+  id: string;
+  deviceId: string;
+  firstName?: string;
+  lastName?: string;
+  updatedAt: Timestamp | null;
+};
+
 export type PassportSubmission = {
   id: string;
   deviceId: string;

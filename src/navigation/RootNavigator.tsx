@@ -20,6 +20,7 @@ import AdminCheckinsScreen from "../admin/screens/AdminCheckinsScreen";
 import AdminLeaderboardScreen from "../admin/screens/AdminLeaderboardScreen";
 import AdminPrizeWheelScreen from "../admin/screens/AdminPrizeWheelScreen";
 import AdminPassportSubmissionsScreen from "../admin/screens/AdminPassportSubmissionsScreen";
+import AdminAttendeesScreen from "../admin/screens/AdminAttendeesScreen";
 import MainTabs from "./MainTabs";
 import { useAccess } from "../context/AccessContext";
 import { useUserProfile } from "../context/UserProfileContext";
@@ -122,6 +123,11 @@ export default function RootNavigator() {
         name="AdminLeaderboard"
         component={AdminLeaderboardScreen}
         options={{ headerShown: true, title: "Leaderboard" }}
+      />
+      <Stack.Screen
+        name="AdminAttendees"
+        component={AdminAttendeesScreen}
+        options={{ headerShown: true, title: "Attendees" }}
       />
       <Stack.Screen
         name="AdminPassportSubmissions"

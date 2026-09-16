@@ -162,6 +162,7 @@ export default function AdminDashboardScreen() {
             { label: "Board & staff", screen: "AdminBoard" },
             { label: "Polls & surveys", screen: "AdminPolls" },
             { label: "Check-in counts", screen: "AdminCheckins" },
+            { label: "Attendees", screen: "AdminAttendees" },
             { label: "Leaderboard", screen: "AdminLeaderboard" },
             { label: "Passport Submissions", screen: "AdminPassportSubmissions" },
           ].map((item) => (

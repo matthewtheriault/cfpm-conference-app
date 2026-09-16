@@ -59,6 +59,14 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Attendee profiles: mirrors the on-device name capture so the organizer
+    // can see who's signed in, in the "Attendees" admin view. Doc id is the
+    // device id, same trust model as pushTokens/passportSubmissions below.
+    match /profiles/{docId} {
+      allow read: if isAdmin();
+      allow create, update: if true;
+    }
+
     // Session check-ins: doc id is "{scheduleItemId}_{deviceId}", so an attendee can
     // only ever create/delete their own device's check-in for a given session (they'd
     // have to guess another device's random id to touch anyone else's). Mirrors the

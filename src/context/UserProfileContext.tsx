@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db, firebaseConfigured } from "../firebase";
+import { getDeviceId } from "../deviceId";
 
 const STORAGE_KEY = "cfpm.userProfile";
 
@@ -37,6 +40,20 @@ export function UserProfileProvider({ children }: { children: React.ReactNode })
     const next = { firstName: firstName.trim(), lastName: lastName.trim() };
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     setProfile(next);
+    if (firebaseConfigured) {
+      try {
+        const deviceId = await getDeviceId();
+        await setDoc(doc(db, "profiles", deviceId), {
+          deviceId,
+          firstName: next.firstName,
+          lastName: next.lastName,
+          updatedAt: serverTimestamp(),
+        });
+      } catch {
+        // Best-effort mirror for the organizer's "Attendees" view - on-device
+        // storage above is the source of truth for the attendee's own app.
+      }
+    }
   };
 
   const clearProfile = async () => {
