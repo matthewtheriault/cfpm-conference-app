@@ -39,6 +39,7 @@ export default function LectureDetailScreen() {
     navigation.getParent()?.navigate("More", {
       screen: "SpeakerDetail",
       params: { speaker: speakerProfile },
+      initial: false,
     });
   };
 

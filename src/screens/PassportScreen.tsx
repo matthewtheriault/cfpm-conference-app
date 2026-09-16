@@ -14,7 +14,14 @@ export default function PassportScreen() {
   const { data: exhibitors, loading, error } = useFirestoreCollection<Exhibitor>("exhibitors", [
     orderBy("name", "asc"),
   ]);
-  const { isVisited, visitedCount, isLoading: passportLoading } = useExhibitorPassport();
+  const {
+    isVisited,
+    visitedCount,
+    isLoading: passportLoading,
+    isSubmitted,
+    submitPassport,
+  } = useExhibitorPassport();
+  const [submitting, setSubmitting] = React.useState(false);
 
   if (loading || passportLoading) {
     return (
@@ -40,7 +47,16 @@ export default function PassportScreen() {
   }
 
   const total = exhibitors.length;
-  const complete = visitedCount >= total;
+  const eligibleForPrizes = total > 0 && visitedCount / total >= 0.8;
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      await submitPassport(total);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <FlatList
@@ -57,15 +73,35 @@ export default function PassportScreen() {
               style={[styles.progressFill, { width: `${Math.min(100, (visitedCount / total) * 100)}%` }]}
             />
           </View>
-          {complete ? (
+          {isSubmitted ? (
             <Text style={styles.completeText}>
-              Passport complete! Show this screen at the registration desk.
+              Passport submitted for prizes! You can keep scanning if you'd like.
+            </Text>
+          ) : eligibleForPrizes ? (
+            <Text style={styles.completeText}>
+              You've visited {Math.round((visitedCount / total) * 100)}% of booths — eligible for prizes!
             </Text>
           ) : null}
           <Pressable style={styles.scanButton} onPress={() => navigation.navigate("ScanExhibitor")}>
             <Ionicons name="qr-code-outline" size={20} color="#fff" />
             <Text style={styles.scanButtonText}>Scan QR Code</Text>
           </Pressable>
+          {eligibleForPrizes && !isSubmitted ? (
+            <Pressable
+              style={[styles.scanButton, styles.submitButton]}
+              onPress={handleSubmit}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <ActivityIndicator color="#fff" size="small" />
+              ) : (
+                <>
+                  <Ionicons name="trophy-outline" size={20} color="#fff" />
+                  <Text style={styles.scanButtonText}>Submit Passport for Prizes</Text>
+                </>
+              )}
+            </Pressable>
+          ) : null}
         </View>
       }
       renderItem={({ item }) => {
@@ -117,6 +153,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   scanButtonText: { color: "#fff", fontSize: 15, fontFamily: fonts.semibold },
+  submitButton: { backgroundColor: colors.success },
   row: {
     flexDirection: "row",
     alignItems: "center",

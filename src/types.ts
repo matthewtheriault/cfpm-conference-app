@@ -95,6 +95,17 @@ export type ScheduleOverview = {
   imageUrl?: string;
 };
 
+export type PassportSubmission = {
+  id: string;
+  deviceId: string;
+  firstName?: string;
+  lastName?: string;
+  visitedCount: number;
+  totalExhibitors: number;
+  percentComplete: number;
+  submittedAt: Timestamp | null;
+};
+
 export type NotificationDoc = {
   id: string;
   title: string;

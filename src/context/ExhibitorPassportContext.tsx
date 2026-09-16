@@ -6,6 +6,7 @@ import { getDeviceId } from "../deviceId";
 import { useUserProfile } from "./UserProfileContext";
 
 const STORAGE_KEY = "cfpm.exhibitorPassport";
+const SUBMITTED_KEY = "cfpm.exhibitorPassport.submitted";
 
 type ExhibitorPassportContextValue = {
   isLoading: boolean;
@@ -13,6 +14,8 @@ type ExhibitorPassportContextValue = {
   visitedCount: number;
   recordVisit: (exhibitorId: string) => Promise<"new" | "already">;
   clearVisits: () => Promise<void>;
+  isSubmitted: boolean;
+  submitPassport: (totalExhibitors: number) => Promise<void>;
 };
 
 const ExhibitorPassportContext = createContext<ExhibitorPassportContextValue | undefined>(undefined);
@@ -20,6 +23,7 @@ const ExhibitorPassportContext = createContext<ExhibitorPassportContextValue | u
 export function ExhibitorPassportProvider({ children }: { children: React.ReactNode }) {
   const [ids, setIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { firstName, lastName } = useUserProfile();
 
   useEffect(() => {
@@ -32,6 +36,9 @@ export function ExhibitorPassportProvider({ children }: { children: React.ReactN
         }
       }
       setIsLoading(false);
+    });
+    AsyncStorage.getItem(SUBMITTED_KEY).then((raw) => {
+      if (raw === "true") setIsSubmitted(true);
     });
   }, []);
 
@@ -66,7 +73,27 @@ export function ExhibitorPassportProvider({ children }: { children: React.ReactN
 
   const clearVisits = async () => {
     await AsyncStorage.removeItem(STORAGE_KEY);
+    await AsyncStorage.removeItem(SUBMITTED_KEY);
     setIds(new Set());
+    setIsSubmitted(false);
+  };
+
+  const submitPassport = async (totalExhibitors: number) => {
+    if (!firebaseConfigured) return;
+    const deviceId = await getDeviceId();
+    const percentComplete =
+      totalExhibitors > 0 ? Math.round((ids.size / totalExhibitors) * 100) : 0;
+    await setDoc(doc(db, "passportSubmissions", deviceId), {
+      deviceId,
+      firstName,
+      lastName,
+      visitedCount: ids.size,
+      totalExhibitors,
+      percentComplete,
+      submittedAt: serverTimestamp(),
+    });
+    await AsyncStorage.setItem(SUBMITTED_KEY, "true");
+    setIsSubmitted(true);
   };
 
   const value = useMemo(
@@ -76,8 +103,10 @@ export function ExhibitorPassportProvider({ children }: { children: React.ReactN
       visitedCount: ids.size,
       recordVisit,
       clearVisits,
+      isSubmitted,
+      submitPassport,
     }),
-    [ids, isLoading]
+    [ids, isLoading, isSubmitted, firstName, lastName]
   );
 
   return <ExhibitorPassportContext.Provider value={value}>{children}</ExhibitorPassportContext.Provider>;

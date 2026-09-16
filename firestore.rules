@@ -78,6 +78,16 @@ service cloud.firestore {
       allow create: if true;
     }
 
+    // Passport submissions: an attendee submits once they've visited at
+    // least 80% of exhibitor booths, marking themselves eligible for a
+    // prize. Doc id is the device id, so resubmitting (e.g. after visiting
+    // more booths) just overwrites the same doc, same trust model as
+    // pushTokens below.
+    match /passportSubmissions/{docId} {
+      allow read: if isAdmin();
+      allow create, update: if true;
+    }
+
     // Polls/surveys: attendees read the question set, but never each
     // other's answers. Anyone can submit a response (there's no real
     // per-user auth to gate this on); responses can't be read back, updated,

@@ -35,7 +35,7 @@ export default function HomeScreen() {
   const goToTab = (tab: string, moreScreen?: string) => {
     const parent = navigation.getParent();
     if (moreScreen) {
-      parent?.navigate(tab, { screen: moreScreen });
+      parent?.navigate(tab, { screen: moreScreen, initial: false });
     } else {
       parent?.navigate(tab);
     }
