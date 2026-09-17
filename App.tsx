@@ -14,6 +14,7 @@ import {
   PlayfairDisplay_800ExtraBold_Italic,
 } from "@expo-google-fonts/playfair-display";
 import { NavigationContainer } from "@react-navigation/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AccessProvider, useAccess } from "./src/context/AccessContext";
 import { AdminAuthProvider } from "./src/context/AdminAuthContext";
@@ -65,27 +66,29 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider onLayout={onRootLayout}>
-      <ErrorBoundary>
-        <AccessProvider>
-          <UserProfileProvider>
-            <BookmarksProvider>
-              <CheckinsProvider>
-                <ExhibitorPassportProvider>
-                  <AdminAuthProvider>
-                    <PushRegistration />
-                    <OfflineBanner />
-                    <NavigationContainer>
-                      <RootNavigator />
-                    </NavigationContainer>
-                    <StatusBar style="dark" />
-                  </AdminAuthProvider>
-                </ExhibitorPassportProvider>
-              </CheckinsProvider>
-            </BookmarksProvider>
-          </UserProfileProvider>
-        </AccessProvider>
-      </ErrorBoundary>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider onLayout={onRootLayout}>
+        <ErrorBoundary>
+          <AccessProvider>
+            <UserProfileProvider>
+              <BookmarksProvider>
+                <CheckinsProvider>
+                  <ExhibitorPassportProvider>
+                    <AdminAuthProvider>
+                      <PushRegistration />
+                      <OfflineBanner />
+                      <NavigationContainer>
+                        <RootNavigator />
+                      </NavigationContainer>
+                      <StatusBar style="dark" />
+                    </AdminAuthProvider>
+                  </ExhibitorPassportProvider>
+                </CheckinsProvider>
+              </BookmarksProvider>
+            </UserProfileProvider>
+          </AccessProvider>
+        </ErrorBoundary>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
