@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { View, Text, Pressable, StyleSheet, Alert } from "react-native";
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
@@ -15,20 +15,20 @@ export default function ScanExhibitorScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const { data: exhibitors } = useFirestoreCollection<Exhibitor>("exhibitors", [orderBy("name", "asc")]);
   const { recordVisit } = useExhibitorPassport();
-  const [scanned, setScanned] = useState(false);
+  const scannedRef = useRef(false);
 
   const handleScan = async (result: BarcodeScanningResult) => {
-    if (scanned) return;
+    if (scannedRef.current) return;
     const value = result.data;
     if (!value.startsWith(SCAN_PREFIX)) return;
 
-    setScanned(true);
+    scannedRef.current = true;
     const exhibitorId = value.slice(SCAN_PREFIX.length);
     const exhibitor = exhibitors.find((e) => e.id === exhibitorId);
 
     if (!exhibitor) {
       Alert.alert("Unrecognized code", "This QR code doesn't match a known exhibitor.", [
-        { text: "OK", onPress: () => setScanned(false) },
+        { text: "OK", onPress: () => { scannedRef.current = false; } },
       ]);
       return;
     }
@@ -40,7 +40,7 @@ export default function ScanExhibitorScreen() {
         ? `${exhibitor.name} is now in your passport.`
         : `You've already visited ${exhibitor.name}.`,
       [
-        { text: "Keep scanning", onPress: () => setScanned(false) },
+        { text: "Keep scanning", onPress: () => { scannedRef.current = false; } },
         { text: "Done", onPress: () => navigation.goBack() },
       ]
     );
