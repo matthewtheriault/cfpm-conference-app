@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Animated, StyleSheet, useWindowDimensions } from "react-native";
+import { Animated, StyleSheet, View, useWindowDimensions } from "react-native";
 import { Image } from "expo-image";
 import { useRoute } from "@react-navigation/native";
 import {
@@ -142,14 +142,36 @@ export default function ScheduleImageScreen() {
                 style={{
                   width: layout.width,
                   height: layout.height,
+                  overflow: "hidden",
                   transform: [{ translateX }, { translateY }, { scale }],
                 }}
               >
-                <Image
-                  source={{ uri: imageUrl }}
-                  style={{ width: layout.width, height: layout.height }}
-                  contentFit="contain"
-                />
+                {/* This inner box renders the image at MAX_SCALE times the
+                    on-screen size so it's decoded at a high enough
+                    resolution to stay sharp at max zoom (otherwise the
+                    outer scale transform above is just stretching an
+                    already low-res bitmap). It's pre-centered with a
+                    negative offset and scaled back down by 1/MAX_SCALE so
+                    it exactly fills the outer box regardless of the outer
+                    box's own pan/zoom transform - the math only works out
+                    this way because CSS/RN scale transforms anchor on the
+                    element's own center by default. */}
+                <View
+                  style={{
+                    position: "absolute",
+                    width: layout.width * MAX_SCALE,
+                    height: layout.height * MAX_SCALE,
+                    left: -((layout.width * MAX_SCALE - layout.width) / 2),
+                    top: -((layout.height * MAX_SCALE - layout.height) / 2),
+                    transform: [{ scale: 1 / MAX_SCALE }],
+                  }}
+                >
+                  <Image
+                    source={{ uri: imageUrl }}
+                    style={{ width: layout.width * MAX_SCALE, height: layout.height * MAX_SCALE }}
+                    contentFit="contain"
+                  />
+                </View>
               </Animated.View>
             </PinchGestureHandler>
           </Animated.View>

@@ -21,24 +21,33 @@ export default function LectureDetailScreen() {
   const bookmarked = isBookmarked(item.id);
   const checkedIn = isCheckedIn(item.id);
 
-  const [speakerProfile, setSpeakerProfile] = useState<Speaker | null>(null);
+  const [speakerProfiles, setSpeakerProfiles] = useState<Speaker[]>([]);
 
   useEffect(() => {
-    if (!item.speakerId || !firebaseConfigured) return;
-    getDoc(doc(db, "speakers", item.speakerId)).then((snap) => {
-      if (snap.exists()) {
-        setSpeakerProfile({ id: snap.id, ...snap.data() } as Speaker);
-      }
+    const speakerIds = item.speakerIds ?? [];
+    if (speakerIds.length === 0 || !firebaseConfigured) {
+      setSpeakerProfiles([]);
+      return;
+    }
+    let cancelled = false;
+    Promise.all(speakerIds.map((id) => getDoc(doc(db, "speakers", id)))).then((snaps) => {
+      if (cancelled) return;
+      const profiles = snaps
+        .filter((snap) => snap.exists())
+        .map((snap) => ({ id: snap.id, ...snap.data() }) as Speaker);
+      setSpeakerProfiles(profiles);
     });
-  }, [item.speakerId]);
+    return () => {
+      cancelled = true;
+    };
+  }, [item.speakerIds]);
 
   const trackColor = item.track ? getTrackColor(item.track, false) : null;
 
-  const goToSpeaker = () => {
-    if (!speakerProfile) return;
+  const goToSpeaker = (speaker: Speaker) => {
     navigation.getParent()?.navigate("More", {
       screen: "SpeakerDetail",
-      params: { speaker: speakerProfile },
+      params: { speaker },
       initial: false,
     });
   };
@@ -68,21 +77,25 @@ export default function LectureDetailScreen() {
         {item.endTime ? ` – ${item.endTime}` : ""}
       </Text>
 
-      {speakerProfile ? (
-        <Pressable style={styles.speakerCard} onPress={goToSpeaker}>
-          {speakerProfile.photoUrl ? (
-            <Image source={{ uri: speakerProfile.photoUrl }} style={styles.speakerPhoto} contentFit="cover" />
-          ) : (
-            <View style={[styles.speakerPhoto, styles.speakerPhotoFallback]}>
-              <Text style={styles.speakerPhotoFallbackText}>{speakerProfile.name.charAt(0)}</Text>
-            </View>
-          )}
-          <View style={styles.speakerInfo}>
-            <Text style={styles.speakerName}>{speakerProfile.name}</Text>
-            {speakerProfile.title ? <Text style={styles.speakerTitle}>{speakerProfile.title}</Text> : null}
-          </View>
-          <Ionicons name="chevron-forward" size={18} color={colors.muted} />
-        </Pressable>
+      {speakerProfiles.length > 0 ? (
+        <View style={styles.speakerCards}>
+          {speakerProfiles.map((speaker) => (
+            <Pressable key={speaker.id} style={styles.speakerCard} onPress={() => goToSpeaker(speaker)}>
+              {speaker.photoUrl ? (
+                <Image source={{ uri: speaker.photoUrl }} style={styles.speakerPhoto} contentFit="cover" />
+              ) : (
+                <View style={[styles.speakerPhoto, styles.speakerPhotoFallback]}>
+                  <Text style={styles.speakerPhotoFallbackText}>{speaker.name.charAt(0)}</Text>
+                </View>
+              )}
+              <View style={styles.speakerInfo}>
+                <Text style={styles.speakerName}>{speaker.name}</Text>
+                {speaker.title ? <Text style={styles.speakerTitle}>{speaker.title}</Text> : null}
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.muted} />
+            </Pressable>
+          ))}
+        </View>
       ) : item.speaker ? (
         <Text style={styles.speaker}>{item.speaker}</Text>
       ) : null}
@@ -164,6 +177,7 @@ const styles = StyleSheet.create({
   title: { flex: 1, fontSize: 22, fontFamily: fonts.bold, color: colors.ink },
   time: { fontSize: 15, fontFamily: fonts.semibold, color: colors.ink, marginTop: spacing.xs },
   speaker: { fontSize: 15, color: colors.muted },
+  speakerCards: { gap: spacing.xs, marginTop: spacing.xs },
   speakerCard: {
     flexDirection: "row",
     alignItems: "center",
@@ -173,7 +187,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     padding: spacing.sm,
-    marginTop: spacing.xs,
   },
   speakerPhoto: { width: 44, height: 44, borderRadius: radii.pill },
   speakerPhotoFallback: { backgroundColor: colors.primary, alignItems: "center", justifyContent: "center" },

@@ -17,7 +17,6 @@ import type { Poll } from "../types";
 const CONFERENCE_LINE_1 = "The Canadian Federation of Podiatric Medicine";
 const CONFERENCE_LINE_2 = "Annual Conference, November 6th–7th, 2026";
 const CREDITS_LINE = "18.0 continuing education credits";
-const SIGNATURE_NAME = "Stephanie Playford";
 const SIGNATURE_TITLE = "President";
 const SIGNATURE_SUBTITLE = "Stephanie Playford D.Ch.";
 
@@ -120,7 +119,11 @@ export default function CertificateScreen() {
 
           <View style={styles.footer}>
             <View>
-              <Text style={styles.signatureName}>{SIGNATURE_NAME}</Text>
+              <Image
+                source={require("../../assets/branding/signature.png")}
+                style={styles.signatureImage}
+                resizeMode="contain"
+              />
               <View style={styles.signatureLine} />
               <Text style={styles.signatureTitle}>{SIGNATURE_TITLE}</Text>
               <Text style={styles.signatureSubtitle}>{SIGNATURE_SUBTITLE}</Text>
@@ -237,7 +240,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: spacing.xl,
   },
-  signatureName: { fontSize: 16, fontFamily: certificateFonts.nameScript, color: "#1A1712" },
+  signatureImage: { width: 150, height: 28 },
   signatureLine: { width: 120, height: 1, backgroundColor: colors.muted, marginTop: 2, marginBottom: 4 },
   signatureTitle: { fontSize: 12, fontFamily: certificateFonts.regular, color: "#1A1712" },
   signatureSubtitle: { fontSize: 11, fontFamily: certificateFonts.regular, color: colors.muted },

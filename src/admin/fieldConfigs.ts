@@ -1,4 +1,12 @@
-export type FieldType = "text" | "textarea" | "number" | "image" | "select" | "imageList" | "reference";
+export type FieldType =
+  | "text"
+  | "textarea"
+  | "number"
+  | "image"
+  | "select"
+  | "imageList"
+  | "reference"
+  | "multiReference";
 
 export type FieldConfig = {
   key: string;
@@ -7,8 +15,8 @@ export type FieldConfig = {
   placeholder?: string;
   options?: string[]; // for "select"
   required?: boolean;
-  referenceCollection?: string; // for "reference": collection to pick a doc id from
-  referenceLabelField?: string; // for "reference": field on that doc to display
+  referenceCollection?: string; // for "reference"/"multiReference": collection to pick doc id(s) from
+  referenceLabelField?: string; // for "reference"/"multiReference": field on that doc to display
 };
 
 export const scheduleFields: FieldConfig[] = [
@@ -23,11 +31,11 @@ export const scheduleFields: FieldConfig[] = [
     type: "select",
     options: ["Plenary", "Workshop", "Assistant", "Break-Out"],
   },
-  { key: "speaker", label: "Speaker (display name)", type: "text" },
+  { key: "speaker", label: "Speaker (display name, used if none are linked below)", type: "text" },
   {
-    key: "speakerId",
-    label: "Link to speaker profile (optional)",
-    type: "reference",
+    key: "speakerIds",
+    label: "Link to speaker profile(s) (optional)",
+    type: "multiReference",
     referenceCollection: "speakers",
     referenceLabelField: "name",
   },

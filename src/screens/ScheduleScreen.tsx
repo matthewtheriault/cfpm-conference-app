@@ -10,13 +10,25 @@ import { useCheckins } from "../context/CheckinsContext";
 import { EmptyState } from "../components/EmptyState";
 import { getTrackColor } from "../trackColors";
 import { colors, spacing, radii, fonts } from "../attendeeTheme";
-import type { ScheduleItem, ScheduleOverview } from "../types";
+import type { ScheduleItem, ScheduleOverview, Speaker } from "../types";
 
 export default function ScheduleScreen() {
   const navigation = useNavigation<any>();
   const { data, loading, error } = useFirestoreCollection<ScheduleItem>("schedule", [
     orderBy("order", "asc"),
   ]);
+  const { data: speakers } = useFirestoreCollection<Speaker>("speakers");
+  const speakerNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const speaker of speakers) map.set(speaker.id, speaker.name);
+    return map;
+  }, [speakers]);
+  const speakerLabel = (item: ScheduleItem) => {
+    const names = (item.speakerIds ?? [])
+      .map((id) => speakerNameById.get(id))
+      .filter((name): name is string => Boolean(name));
+    return names.length > 0 ? names.join(", ") : item.speaker;
+  };
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const { isCheckedIn } = useCheckins();
   const [view, setView] = useState<"full" | "mine">("full");
@@ -188,7 +200,7 @@ export default function ScheduleScreen() {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{item.title}</Text>
-              {item.speaker ? <Text style={styles.subtitle}>{item.speaker}</Text> : null}
+              {speakerLabel(item) ? <Text style={styles.subtitle}>{speakerLabel(item)}</Text> : null}
               {item.location ? <Text style={styles.meta}>{item.location}</Text> : null}
             </View>
             {isCheckedIn(item.id) ? (

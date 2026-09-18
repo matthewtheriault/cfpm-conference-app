@@ -62,7 +62,9 @@ export function CollectionEditorScreen({
     collectionPath,
     orderByField ? [fbOrderBy(orderByField, "asc")] : []
   );
-  const referenceField = fields.find((f) => f.type === "reference" && f.referenceCollection);
+  const referenceField = fields.find(
+    (f) => (f.type === "reference" || f.type === "multiReference") && f.referenceCollection
+  );
   const { data: referenceOptions } = useFirestoreCollection<any>(
     referenceField?.referenceCollection ?? collectionPath
   );
@@ -173,12 +175,12 @@ export function CollectionEditorScreen({
         const raw = values[field.key]?.trim() ?? "";
         if (field.type === "number") {
           payload[field.key] = raw ? Number(raw) : null;
-        } else if (field.type === "imageList") {
-          const urls = raw
+        } else if (field.type === "imageList" || field.type === "multiReference") {
+          const items = raw
             .split("\n")
             .map((line) => line.trim())
             .filter(Boolean);
-          payload[field.key] = urls.length > 0 ? urls : null;
+          payload[field.key] = items.length > 0 ? items : null;
         } else {
           payload[field.key] = raw || null;
         }
@@ -319,6 +321,39 @@ export function CollectionEditorScreen({
                       key={option.id}
                       style={[styles.selectChip, active && styles.selectChipActive]}
                       onPress={() => setValues((prev) => ({ ...prev, [field.key]: option.id }))}
+                    >
+                      <Text style={[styles.selectChipText, active && styles.selectChipTextActive]}>
+                        {label || "Untitled"}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            ) : field.type === "multiReference" ? (
+              <View style={styles.selectRow}>
+                {referenceOptions.map((option) => {
+                  const selectedIds = (values[field.key] ?? "")
+                    .split("\n")
+                    .map((line) => line.trim())
+                    .filter(Boolean);
+                  const active = selectedIds.includes(option.id);
+                  const label = field.referenceLabelField ? option[field.referenceLabelField] : option.id;
+                  return (
+                    <Pressable
+                      key={option.id}
+                      style={[styles.selectChip, active && styles.selectChipActive]}
+                      onPress={() =>
+                        setValues((prev) => {
+                          const current = (prev[field.key] ?? "")
+                            .split("\n")
+                            .map((line) => line.trim())
+                            .filter(Boolean);
+                          const next = active
+                            ? current.filter((id) => id !== option.id)
+                            : [...current, option.id];
+                          return { ...prev, [field.key]: next.join("\n") };
+                        })
+                      }
                     >
                       <Text style={[styles.selectChipText, active && styles.selectChipTextActive]}>
                         {label || "Untitled"}

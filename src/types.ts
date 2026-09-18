@@ -6,8 +6,8 @@ export type ScheduleItem = {
   startTime: string; // e.g. "9:00 AM"
   endTime?: string;
   title: string;
-  speaker?: string;
-  speakerId?: string; // optional link to a speakers/{id} doc, for photo + bio link
+  speaker?: string; // free-text display name(s), used when no speaker profiles are linked
+  speakerIds?: string[]; // optional links to speakers/{id} docs, for photo + bio cards
   location?: string;
   description?: string;
   order?: number;

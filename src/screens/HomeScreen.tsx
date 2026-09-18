@@ -74,7 +74,9 @@ export default function HomeScreen() {
             style={styles.gridItem}
             onPress={() => goToTab(link.tab!, link.moreScreen)}
           >
-            <Ionicons name={link.icon} size={26} color={colors.primary} />
+            <View style={styles.gridIconChip}>
+              <Ionicons name={link.icon} size={26} color={colors.primary} />
+            </View>
             <Text style={styles.gridLabel}>{link.label}</Text>
           </Pressable>
         ))}
@@ -139,6 +141,14 @@ const styles = StyleSheet.create({
     gap: 6,
     padding: spacing.xs,
     ...shadow,
+  },
+  gridIconChip: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(238, 58, 67, 0.1)",
   },
   gridLabel: { fontSize: 12, fontFamily: fonts.semibold, color: colors.ink, textAlign: "center" },
 });
