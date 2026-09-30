@@ -56,3 +56,6 @@ serviceAccountKey.json
 /*.jpeg
 /*.pdf
 /*.xlsx
+
+# Private business documents (proposal, invoices) — keep out of the public repo
+Claude outputs/
