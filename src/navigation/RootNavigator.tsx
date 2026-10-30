@@ -13,6 +13,7 @@ import AdminSponsorsScreen from "../admin/screens/AdminSponsorsScreen";
 import AdminEventsScreen from "../admin/screens/AdminEventsScreen";
 import AdminMapScreen from "../admin/screens/AdminMapScreen";
 import AdminBoardScreen from "../admin/screens/AdminBoardScreen";
+import AdminListingsScreen from "../admin/screens/AdminListingsScreen";
 import AdminPollsScreen from "../admin/screens/AdminPollsScreen";
 import AdminPollEditScreen from "../admin/screens/AdminPollEditScreen";
 import AdminPollResponsesScreen from "../admin/screens/AdminPollResponsesScreen";
@@ -98,6 +99,11 @@ export default function RootNavigator() {
         name="AdminBoard"
         component={AdminBoardScreen}
         options={{ headerShown: true, title: "Manage Board & Staff" }}
+      />
+      <Stack.Screen
+        name="AdminListings"
+        component={AdminListingsScreen}
+        options={{ headerShown: true, title: "Manage Practices & Jobs" }}
       />
       <Stack.Screen
         name="AdminPolls"

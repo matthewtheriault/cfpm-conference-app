@@ -167,7 +167,11 @@ automatically, or paste an image URL instead if you'd rather host it elsewhere.
   description.
 - **Speakers** — name, title, organization, bio, headshot.
 - **Exhibitors** — name, booth number, category, bio, website, logo.
-- **Sponsors** — name, tier (Platinum/Gold/Silver/Bronze), website, description, logo.
+- **Sponsors** — name, tier, website, description, logo. The tier list itself (and the order
+  tiers appear in for attendees) is edited at the top of the admin Sponsors screen and stored
+  in `config/sponsorTiers`, so new tiers don't need an app update.
+- **Practices for Sale & Jobs** — practice-for-sale and job-posting listings, pasted from
+  the newsletter: type, title, location, posted date, details, contact info.
 - **Events** — title, date, time, location, description, image.
 - **Maps** — separate image + notes for the Venue map and the Exhibit Hall map.
 - **Polls & Surveys** — title, description, poll vs. survey, open/closed, and a list of

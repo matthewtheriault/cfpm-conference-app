@@ -59,6 +59,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Practices for sale & job postings, copied in from the CFPM newsletter.
+    match /listings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // App settings the organizer can change without an app update, e.g.
+    // config/sponsorTiers (the sponsor tier list and its display order).
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Attendee profiles: mirrors the on-device name capture so the organizer
     // can see who's signed in, in the "Attendees" admin view. Doc id is the
     // device id, same trust model as pushTokens/passportSubmissions below.

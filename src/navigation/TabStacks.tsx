@@ -19,6 +19,7 @@ import SponsorsScreen from "../screens/SponsorsScreen";
 import PollsScreen from "../screens/PollsScreen";
 import PollDetailScreen from "../screens/PollDetailScreen";
 import BoardScreen from "../screens/BoardScreen";
+import ListingsScreen from "../screens/ListingsScreen";
 import PassportScreen from "../screens/PassportScreen";
 import ScanExhibitorScreen from "../screens/ScanExhibitorScreen";
 import CertificateScreen from "../screens/CertificateScreen";
@@ -139,6 +140,11 @@ export function MoreStack() {
         name="Board"
         component={BoardScreen}
         options={{ ...rootScreenOptions, ...detailScreenOptions, title: "Board & Staff" }}
+      />
+      <MoreStackNav.Screen
+        name="Listings"
+        component={ListingsScreen}
+        options={{ ...rootScreenOptions, ...detailScreenOptions, title: "Practices & Jobs" }}
       />
       <MoreStackNav.Screen
         name="Polls"

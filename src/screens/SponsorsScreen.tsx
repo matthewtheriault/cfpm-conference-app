@@ -3,16 +3,16 @@ import { View, Text, SectionList, StyleSheet, ActivityIndicator, Linking, Pressa
 import { Image } from "expo-image";
 import { orderBy } from "firebase/firestore";
 import { useFirestoreCollection } from "../hooks/useFirestoreCollection";
+import { useSponsorTiers } from "../hooks/useSponsorTiers";
 import { EmptyState } from "../components/EmptyState";
 import { colors, spacing, radii, fonts } from "../attendeeTheme";
 import type { Sponsor } from "../types";
-
-const TIER_ORDER = ["Platinum", "Gold", "Silver", "Bronze", "Lanyard"];
 
 export default function SponsorsScreen() {
   const { data, loading, error } = useFirestoreCollection<Sponsor>("sponsors", [
     orderBy("name", "asc"),
   ]);
+  const tiers = useSponsorTiers();
 
   const sections = useMemo(() => {
     const byTier = new Map<string, Sponsor[]>();
@@ -22,11 +22,14 @@ export default function SponsorsScreen() {
       list.push(sponsor);
       byTier.set(tier, list);
     }
-    const ordered = [...byTier.entries()].sort(
-      (a, b) => TIER_ORDER.indexOf(a[0]) - TIER_ORDER.indexOf(b[0])
-    );
+    // Tiers missing from the configured list sort after the known ones.
+    const rank = (tier: string) => {
+      const index = tiers.indexOf(tier);
+      return index === -1 ? tiers.length : index;
+    };
+    const ordered = [...byTier.entries()].sort((a, b) => rank(a[0]) - rank(b[0]));
     return ordered.map(([title, entries]) => ({ title, data: entries }));
-  }, [data]);
+  }, [data, tiers]);
 
   if (loading) {
     return (

@@ -15,6 +15,7 @@ const ITEMS: { label: string; icon: keyof typeof Ionicons.glyphMap; screen: stri
   { label: "Exhibitors", icon: "business-outline", screen: "Exhibitors" },
   { label: "Sponsors", icon: "ribbon-outline", screen: "Sponsors" },
   { label: "Board & Staff", icon: "people-circle-outline", screen: "Board" },
+  { label: "Practices for Sale & Jobs", icon: "briefcase-outline", screen: "Listings" },
   { label: "Polls & Surveys", icon: "checkbox-outline", screen: "Polls" },
   { label: "Exhibitor Passport", icon: "qr-code-outline", screen: "Passport" },
   { label: "Continuing Education Credits", icon: "ribbon-outline", screen: "Certificate" },

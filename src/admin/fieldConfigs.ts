@@ -82,18 +82,37 @@ export const exhibitorFields: FieldConfig[] = [
   ...socialFields,
 ];
 
-export const sponsorFields: FieldConfig[] = [
+// Tier options come from the config/sponsorTiers doc (see useSponsorTiers),
+// so this takes the current list rather than hardcoding it.
+export const sponsorFields = (tiers: string[]): FieldConfig[] => [
   { key: "name", label: "Name", type: "text", required: true },
-  {
-    key: "tier",
-    label: "Tier",
-    type: "select",
-    options: ["Platinum", "Gold", "Silver", "Bronze", "Lanyard"],
-  },
+  { key: "tier", label: "Tier", type: "select", options: tiers },
   { key: "website", label: "Website", type: "text", placeholder: "https://" },
   { key: "description", label: "Description", type: "textarea" },
   { key: "logoUrl", label: "Logo", type: "image" },
   { key: "order", label: "Display order (for rolling banner)", type: "number", placeholder: "e.g. 1" },
+];
+
+export const listingFields: FieldConfig[] = [
+  {
+    key: "kind",
+    label: "Type",
+    type: "select",
+    options: ["Practice for Sale", "Job Posting"],
+    required: true,
+  },
+  { key: "title", label: "Title", type: "text", required: true, placeholder: "e.g. Chiropodist" },
+  { key: "location", label: "Location", type: "text", placeholder: "e.g. Winnipeg, MB" },
+  { key: "postedDate", label: "Posted date", type: "text", placeholder: "e.g. October 13, 2026" },
+  {
+    key: "details",
+    label: "Details (paste from the newsletter)",
+    type: "textarea",
+    required: true,
+  },
+  { key: "contactName", label: "Contact name (optional)", type: "text" },
+  { key: "email", label: "Contact email (optional)", type: "text", placeholder: "name@example.com" },
+  { key: "phone", label: "Contact phone (optional)", type: "text", placeholder: "e.g. 555-123-4567" },
 ];
 
 export const eventFields: FieldConfig[] = [

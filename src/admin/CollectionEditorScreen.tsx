@@ -18,6 +18,7 @@ import {
   deleteDoc,
   doc,
   orderBy as fbOrderBy,
+  serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
@@ -43,6 +44,9 @@ type Props = {
   // Optional extra action rendered per row, before the delete icon (e.g.
   // AdminExhibitorsScreen's "show QR code" button).
   renderRowAction?: (item: any) => React.ReactNode;
+  // Adds a createdAt server timestamp to new docs, for screens that list
+  // newest-first (e.g. Practices & Jobs).
+  stampCreatedAt?: boolean;
 };
 
 type FormValues = Record<string, string>;
@@ -57,6 +61,7 @@ export function CollectionEditorScreen({
   emptyLabel,
   listHeader,
   renderRowAction,
+  stampCreatedAt,
 }: Props) {
   const { data, loading } = useFirestoreCollection<any>(
     collectionPath,
@@ -186,7 +191,10 @@ export function CollectionEditorScreen({
         }
       }
       if (editingId === "new") {
-        await addDoc(collection(db, collectionPath), payload);
+        await addDoc(
+          collection(db, collectionPath),
+          stampCreatedAt ? { ...payload, createdAt: serverTimestamp() } : payload
+        );
       } else if (editingId) {
         await updateDoc(doc(db, collectionPath, editingId), payload);
       }
@@ -229,7 +237,14 @@ export function CollectionEditorScreen({
               />
             ) : field.type === "select" ? (
               <View style={styles.selectRow}>
-                {field.options?.map((option) => {
+                {/* Keep a saved value visible even if it's no longer one of the
+                    options (e.g. a sponsor tier that was since removed). */}
+                {[
+                  ...(field.options ?? []),
+                  ...(values[field.key] && !field.options?.includes(values[field.key])
+                    ? [values[field.key]]
+                    : []),
+                ].map((option) => {
                   const active = values[field.key] === option;
                   return (
                     <Pressable

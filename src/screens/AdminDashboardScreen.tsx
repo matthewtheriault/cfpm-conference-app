@@ -160,6 +160,7 @@ export default function AdminDashboardScreen() {
             { label: "Events", screen: "AdminEvents" },
             { label: "Maps", screen: "AdminMap" },
             { label: "Board & staff", screen: "AdminBoard" },
+            { label: "Practices & jobs", screen: "AdminListings" },
             { label: "Polls & surveys", screen: "AdminPolls" },
             { label: "Check-in counts", screen: "AdminCheckins" },
             { label: "Attendees", screen: "AdminAttendees" },

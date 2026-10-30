@@ -35,6 +35,19 @@ export type Sponsor = {
   order?: number; // controls rolling banner sequence; falls back to name order
 };
 
+export type Listing = {
+  id: string;
+  kind: "Practice for Sale" | "Job Posting";
+  title: string;
+  location?: string;
+  postedDate?: string; // free text as written in the newsletter, e.g. "October 13, 2026"
+  details: string;
+  contactName?: string;
+  email?: string;
+  phone?: string;
+  createdAt?: Timestamp | null;
+};
+
 export type Speaker = {
   id: string;
   name: string;
