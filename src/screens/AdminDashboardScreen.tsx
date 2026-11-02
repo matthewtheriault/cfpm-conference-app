@@ -225,9 +225,33 @@ export default function AdminDashboardScreen() {
         {sendMode === "later" ? (
           <>
             <Text style={styles.label}>Send at</Text>
-            <Pressable style={styles.input} onPress={() => setShowDatePicker(true)}>
-              <Text style={styles.dateButtonText}>{scheduledDate.toLocaleString()}</Text>
-            </Pressable>
+            {Platform.OS === "web" ? (
+              // The community DateTimePicker has no web implementation, so
+              // the browser's own date/time input stands in for it there.
+              React.createElement("input", {
+                type: "datetime-local",
+                value: toLocalInputValue(scheduledDate),
+                min: toLocalInputValue(new Date()),
+                onChange: (e: { target: { value: string } }) => {
+                  const date = new Date(e.target.value);
+                  if (!isNaN(date.getTime())) setScheduledDate(date);
+                },
+                // Plain CSS (this is a DOM element), mirroring styles.input.
+                style: {
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: radii.sm,
+                  padding: `12px ${spacing.md}px`,
+                  fontSize: 15,
+                  fontFamily: "inherit",
+                  color: colors.ink,
+                  backgroundColor: colors.background,
+                },
+              })
+            ) : (
+              <Pressable style={styles.input} onPress={() => setShowDatePicker(true)}>
+                <Text style={styles.dateButtonText}>{scheduledDate.toLocaleString()}</Text>
+              </Pressable>
+            )}
             {showDatePicker ? (
               <DateTimePicker
                 value={scheduledDate}
@@ -314,6 +338,12 @@ export default function AdminDashboardScreen() {
       </View>
     </ScrollView>
   );
+}
+
+// "YYYY-MM-DDTHH:mm" in local time, the format <input type="datetime-local"> uses.
+function toLocalInputValue(date: Date) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 const styles = StyleSheet.create({
