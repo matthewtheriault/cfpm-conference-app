@@ -141,7 +141,7 @@ export type ScheduledNotification = {
   title: string;
   body: string;
   sendAt: Timestamp;
-  status: "pending" | "sent" | "failed";
+  status: "pending" | "sending" | "sent" | "failed";
   createdBy: string;
   createdAt: Timestamp | null;
   error?: string;

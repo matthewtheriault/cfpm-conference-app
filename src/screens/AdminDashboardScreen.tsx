@@ -183,7 +183,7 @@ export default function AdminDashboardScreen() {
         <Text style={styles.sectionHint}>
           {sendMode === "now"
             ? "Delivered immediately to every device that has the app installed with notifications enabled."
-            : "Queued for delivery around the chosen time (GitHub Actions checks every ~10 minutes, so it may land a few minutes late)."}
+            : "Queued and sent within about a minute of the chosen time."}
         </Text>
 
         <View style={styles.segmentRow}>

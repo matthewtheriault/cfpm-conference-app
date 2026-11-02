@@ -1,7 +1,8 @@
 // Sends any push notifications that were scheduled for now or earlier, then
-// marks them sent. Runs on a cron via
-// .github/workflows/scheduled-notifications.yml (nothing needs to run this
-// locally, but you can with FIREBASE_SERVICE_ACCOUNT set in your shell).
+// marks them sent. Manual backup for the sendScheduledNotifications Cloud
+// Function, which normally does this every minute - run it via "Run
+// workflow" on .github/workflows/scheduled-notifications.yml (or locally
+// with FIREBASE_SERVICE_ACCOUNT set in your shell).
 //
 // Requires FIREBASE_SERVICE_ACCOUNT - the full service-account JSON, as a
 // single-line string - set as a GitHub Actions repository secret. See
@@ -49,6 +50,16 @@ async function run() {
     .filter((token) => typeof token === "string" && token.startsWith("ExponentPushToken"));
 
   for (const doc of due.docs) {
+    // Claim it first (same as the Cloud Function), so the two can never
+    // both send the same notification.
+    const claimed = await db.runTransaction(async (tx) => {
+      const fresh = await tx.get(doc.ref);
+      if (fresh.data()?.status !== "pending") return false;
+      tx.update(doc.ref, { status: "sending" });
+      return true;
+    });
+    if (!claimed) continue;
+
     const { title, body, createdBy } = doc.data();
     try {
       const messages = tokens.map((to) => ({ to, title, body, sound: "default" }));

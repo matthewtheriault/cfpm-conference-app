@@ -34,10 +34,10 @@ for admin photo/logo uploads.
 - **Push notifications** — "Send Now" goes through a Cloud Function (`functions/index.js`)
   that fans the send out to Expo's push service server-side (a browser can't call Expo's
   push API directly — it doesn't return CORS headers), delivered within a few seconds to
-  both iOS and Android. "Schedule for later" instead goes through a free scheduled GitHub
-  Actions workflow that needs no Cloud Function. Since Cloud Functions requires Firebase's
-  paid **Blaze** plan to deploy at all (regardless of usage — see step 2 below), "Send Now"
-  needs Blaze; "Schedule for later" alone would work on the free Spark plan.
+  both iOS and Android. "Schedule for later" is sent by a second Cloud Function,
+  `sendScheduledNotifications`, which checks for due sends every minute. Cloud Functions
+  require Firebase's paid **Blaze** plan to deploy at all (regardless of usage — see step 2
+  below), though both stay within the free usage allowances.
 
 ## One-time setup
 
@@ -193,13 +193,16 @@ to how many devices shows underneath.
 
 You can also switch to **Schedule for later**, pick a date/time, and it'll be queued
 instead of sent immediately (shown under "Scheduled", with a cancel button). Delivery is
-handled by a GitHub Actions workflow (`.github/workflows/scheduled-notifications.yml`)
-that checks for due sends roughly every 10 minutes — it can run a few minutes late under
-GitHub's scheduler, and GitHub pauses scheduled workflows on repos with no activity for
-60 days (any push or a manual "Run workflow" click re-enables it). This path doesn't use
-Cloud Functions at all, so it works on the free Spark plan even if you skip step 6.
+handled by the `sendScheduledNotifications` Cloud Function, which checks for due sends
+every minute (deployed with the others in step 6). It used to be a GitHub Actions cron,
+but GitHub throttled it to runs hours apart, so scheduled sends arrived hours late.
 
-**One-time setup for scheduled sends:** the workflow needs its own copy of the service
+The GitHub Actions workflow (`.github/workflows/scheduled-notifications.yml`) is kept as
+a **manual backup** only — Actions tab → "Send scheduled notifications" → Run workflow
+sends anything that's due. Both claim each notification before sending, so running the
+backup can never double-send.
+
+**One-time setup for the manual backup:** the workflow needs its own copy of the service
 account key (the `serviceAccountKey.json` you generated in step 7 of setup, but
 GitHub can't read your local gitignored file — it goes into a repository secret
 instead):
@@ -210,8 +213,7 @@ instead):
 3. Name it `FIREBASE_SERVICE_ACCOUNT`, paste the entire JSON file's contents as the
    value, and save.
 
-That's it — scheduled sends will start working on the next scheduled run (or trigger one
-immediately from the Actions tab → "Send scheduled notifications" → Run workflow).
+That's it — the backup can then be run from the Actions tab whenever needed.
 
 ## Building for the App Store / Google Play
 
