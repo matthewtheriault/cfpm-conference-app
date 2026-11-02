@@ -55,7 +55,7 @@ async function run() {
     const claimed = await db.runTransaction(async (tx) => {
       const fresh = await tx.get(doc.ref);
       if (fresh.data()?.status !== "pending") return false;
-      tx.update(doc.ref, { status: "sending" });
+      tx.update(doc.ref, { status: "sending", claimedAt: Timestamp.now() });
       return true;
     });
     if (!claimed) continue;
@@ -64,11 +64,17 @@ async function run() {
     try {
       const messages = tokens.map((to) => ({ to, title, body, sound: "default" }));
       for (const batch of chunk(messages, CHUNK_SIZE)) {
-        await fetch(EXPO_PUSH_ENDPOINT, {
+        const response = await fetch(EXPO_PUSH_ENDPOINT, {
           method: "POST",
           headers: { Accept: "application/json", "Content-Type": "application/json" },
           body: JSON.stringify(batch),
         });
+        // Don't report a rejected batch as sent (the Cloud Function also
+        // retries; this manual backup just fails loudly).
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.errors?.length) {
+          throw new Error(`Expo push service rejected a batch (HTTP ${response.status})`);
+        }
       }
 
       await db.collection("notifications").add({
