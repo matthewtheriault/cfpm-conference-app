@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  Keyboard,
+  Platform,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -18,10 +28,26 @@ export default function PollDetailScreen() {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // Android draws edge-to-edge, so the keyboard overlaps the window instead of
+  // resizing it. Pad the scroll content by the keyboard height so the Submit
+  // button can still be scrolled into view. iOS uses automaticallyAdjustKeyboardInsets.
+  const [androidKeyboardHeight, setAndroidKeyboardHeight] = useState(0);
 
   useEffect(() => {
     hasAnsweredPoll(poll.id).then(setAlreadyAnswered);
   }, [poll.id]);
+
+  useEffect(() => {
+    if (Platform.OS !== "android") return;
+    const show = Keyboard.addListener("keyboardDidShow", (e) =>
+      setAndroidKeyboardHeight(e.endCoordinates.height)
+    );
+    const hide = Keyboard.addListener("keyboardDidHide", () => setAndroidKeyboardHeight(0));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   const selectSingle = (questionId: string, option: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: option }));
@@ -42,6 +68,7 @@ export default function PollDetailScreen() {
   };
 
   const handleSubmit = async () => {
+    Keyboard.dismiss();
     setSubmitting(true);
     try {
       const deviceId = await getDeviceId();
@@ -82,7 +109,16 @@ export default function PollDetailScreen() {
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={[
+        styles.content,
+        androidKeyboardHeight > 0 && { paddingBottom: spacing.xl + androidKeyboardHeight },
+      ]}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode={Platform.OS === "ios" ? "interactive" : "on-drag"}
+      automaticallyAdjustKeyboardInsets
+    >
       <Text style={styles.title}>{poll.title}</Text>
       {poll.description ? <Text style={styles.description}>{poll.description}</Text> : null}
 
@@ -99,6 +135,8 @@ export default function PollDetailScreen() {
               placeholderTextColor={colors.muted}
               style={[styles.input, styles.textArea]}
               multiline
+              returnKeyType="done"
+              submitBehavior="blurAndSubmit"
             />
           ) : (
             (q.options ?? []).map((option) => {

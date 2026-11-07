@@ -4,7 +4,7 @@ import type { ExpoConfig } from "expo/config";
 const config: ExpoConfig = {
   name: "CFPM Conference",
   slug: "cfpm-conference",
-  version: "1.4.0",
+  version: "1.4.1",
   orientation: "portrait",
   icon: "./assets/icon.png",
   scheme: "cfpmconference",
